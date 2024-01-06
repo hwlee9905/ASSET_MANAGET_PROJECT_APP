@@ -1,16 +1,22 @@
 package org.example.appproject_be.controller;
 
 import org.example.appproject_be.model.Asset;
+import org.example.appproject_be.service.AssetService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //@Controller
 @RestController //@Controller + @ResponseBody
 public class AssetController {
+    @Autowired
+    private AssetService assetService;
     //localhost:8080/assets
     @GetMapping("/assets") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
-    public String getAssets(){
-        return "displaying the list of assets";
+    public List<Asset> getAssets(){
+        return assetService.getAssets();
     }
     //localhost:8080/assets/index
     @GetMapping("/assets/{index}")
