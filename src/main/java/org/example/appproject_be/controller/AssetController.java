@@ -1,12 +1,13 @@
 package org.example.appproject_be.controller;
 
+import jakarta.validation.Valid;
 import org.example.appproject_be.model.Asset;
 import org.example.appproject_be.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 //@Controller
 @RestController //@Controller + @ResponseBody
@@ -20,12 +21,11 @@ public class AssetController {
     }
     //localhost:8080/assets/index
     @GetMapping("/assets/{index}")
-    public String getAsset(@PathVariable("index") String index){
-        return "Fetching the asset details for the index " + index;
+    public Optional<Asset> getAsset(@PathVariable("index") Long index){
+        return assetService.getAsset(index);
     }
     @PostMapping("/assets")
-    public Asset saveAsset(@RequestBody Asset asset){
-
+    public Asset saveAsset(@Valid @RequestBody Asset asset){
         return assetService.saveAsset(asset);
     }
     @PutMapping("/assets/{index}")

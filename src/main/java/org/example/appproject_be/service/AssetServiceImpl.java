@@ -5,8 +5,8 @@ import org.example.appproject_be.repository.AssetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AssetServiceImpl implements AssetService {
@@ -16,6 +16,11 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public List<Asset> getAssets() {
         return assetRepository.findAll();
+    }
+
+    @Override
+    public Optional<Asset> getAsset(Long id) {
+        return assetRepository.findById(id);
     }
 
     @Override
