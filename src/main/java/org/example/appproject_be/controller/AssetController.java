@@ -24,8 +24,9 @@ public class AssetController {
         return "Fetching the asset details for the index " + index;
     }
     @PostMapping("/assets")
-    public String saveAssets(@RequestBody Asset asset){
-        return "saving the asset details to the DB " + asset;
+    public Asset saveAsset(@RequestBody Asset asset){
+
+        return assetService.saveAsset(asset);
     }
     @PutMapping("/assets/{index}")
     public Asset updateAsset (@PathVariable Long index, @RequestBody Asset asset){
