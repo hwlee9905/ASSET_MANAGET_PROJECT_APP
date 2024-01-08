@@ -11,6 +11,7 @@ import java.util.Optional;
 
 //@Controller
 @RestController //@Controller + @ResponseBody
+@CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 public class AssetController {
     @Autowired
     private AssetService assetService;
@@ -35,7 +36,8 @@ public class AssetController {
     }
     //localhost:8080/assets?index=index123
     @DeleteMapping("/assets")
-    public String deleteAsset (@RequestParam("assetCode") String assetCode){
-        return "Deleting the asset details for the assetCode " + assetCode;
+    public void deleteAsset (@RequestParam("idx") Long idx){
+        assetService.deleteAsset(idx);
+//        return "Deleting the asset details for the assetCode " + assetCode;
     }
 }

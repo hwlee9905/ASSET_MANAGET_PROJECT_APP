@@ -27,4 +27,9 @@ public class AssetServiceImpl implements AssetService {
     public Asset saveAsset(Asset asset) {
         return assetRepository.save(asset);
     }
+
+    @Override
+    public void deleteAsset(Long id) {
+        assetRepository.deleteById(id);
+    }
 }

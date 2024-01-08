@@ -9,4 +9,6 @@ public interface AssetService {
     List<Asset> getAssets();
     Optional<Asset> getAsset(Long id);
     Asset saveAsset(Asset asset);
+
+    void deleteAsset(Long id);
 }
