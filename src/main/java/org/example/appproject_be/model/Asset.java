@@ -17,17 +17,20 @@ import lombok.ToString;
 public class Asset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long idx;
     private String assetType;
-    @NotBlank(message = "Serial Number should not be null or blank")
+    @NotNull(message = "Serial Number should not be null or blank")
     @Column(unique = true)
     private String sn;
     private String dept;
     private String manufacturer;
     private String assetName;
-    @OneToOne(mappedBy = "asset", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "idx")
     private Hardware hardware;
-    @OneToOne(mappedBy = "asset", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "idx")
     private Software software;
 
 

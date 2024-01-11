@@ -1,6 +1,7 @@
 package org.example.appproject_be.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.example.appproject_be.model.Asset;
 import org.example.appproject_be.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,9 @@ import java.util.Optional;
 //@Controller
 @RestController //@Controller + @ResponseBody
 @CrossOrigin(originPatterns = "*", allowedHeaders = "*")
+@RequiredArgsConstructor
 public class AssetController {
-    @Autowired
-    private AssetService assetService;
+    private final AssetService assetService;
     //localhost:8080/assets
     @GetMapping("/assets") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
     public List<Asset> getAssets(){

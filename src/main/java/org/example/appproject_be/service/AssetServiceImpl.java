@@ -1,5 +1,6 @@
 package org.example.appproject_be.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.appproject_be.model.Asset;
 import org.example.appproject_be.model.Hardware;
 import org.example.appproject_be.repository.AssetRepository;
@@ -10,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AssetServiceImpl implements AssetService {
-    @Autowired
-    private AssetRepository assetRepository;
+    private final AssetRepository assetRepository;
 
     @Override
     public List<Asset> getAssets() {

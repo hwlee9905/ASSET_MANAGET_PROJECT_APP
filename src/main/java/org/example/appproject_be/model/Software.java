@@ -12,9 +12,10 @@ import java.util.Date;
 @Getter@Setter
 public class Software {
     @Id
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="idx")
-    private Asset asset;
+    @Column(name = "idx")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idx;
     private LocalDateTime expiryDate;
-
+    @OneToOne(mappedBy = "idx")
+    private Asset asset;
 }
