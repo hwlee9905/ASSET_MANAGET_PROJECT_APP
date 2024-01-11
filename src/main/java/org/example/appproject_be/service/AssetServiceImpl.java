@@ -1,6 +1,7 @@
 package org.example.appproject_be.service;
 
 import org.example.appproject_be.model.Asset;
+import org.example.appproject_be.model.Hardware;
 import org.example.appproject_be.repository.AssetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,22 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public Optional<Asset> getAsset(Long id) {
-        return assetRepository.findById(id);
+    public Asset getAsset(Long id) {
+        Optional<Asset> asset = assetRepository.findById(id);
+        if (asset.isPresent()) {
+            return asset.get();
+        }
+        throw new RuntimeException("Asset is not found for the id " + id);
+
     }
 
     @Override
     public Asset saveAsset(Asset asset) {
+        return assetRepository.save(asset);
+    }
+
+    @Override
+    public Asset updateAsset(Asset asset) {
         return assetRepository.save(asset);
     }
 

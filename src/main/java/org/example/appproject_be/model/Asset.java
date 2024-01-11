@@ -18,18 +18,17 @@ public class Asset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
-    @Column(name="assetType")
     private String assetType;
     @NotBlank(message = "Serial Number should not be null or blank")
-    @Column(name="sn", unique = true)
+    @Column(unique = true)
     private String sn;
-    @Column(name="dept")
     private String dept;
-    @Column(name="manufacturer")
     private String manufacturer;
-    @Column(name="assetName")
     private String assetName;
-
+    @OneToOne(mappedBy = "asset", cascade = CascadeType.ALL)
+    private Hardware hardware;
+    @OneToOne(mappedBy = "asset", cascade = CascadeType.ALL)
+    private Software software;
 
 
 }

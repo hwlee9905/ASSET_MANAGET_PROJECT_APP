@@ -22,7 +22,7 @@ public class AssetController {
     }
     //localhost:8080/assets/index
     @GetMapping("/assets/{index}")
-    public Optional<Asset> getAsset(@PathVariable("index") Long index){
+    public Asset getAsset(@PathVariable Long index){
         return assetService.getAsset(index);
     }
     @PostMapping("/assets")
@@ -31,8 +31,8 @@ public class AssetController {
     }
     @PutMapping("/assets/{index}")
     public Asset updateAsset (@PathVariable Long index, @RequestBody Asset asset){
-        System.out.println("updating the asset data for the index " + index);
-        return asset;
+        asset.setIdx(index);
+        return assetService.updateAsset(asset);
     }
     //localhost:8080/assets?index=index123
     @DeleteMapping("/assets")
