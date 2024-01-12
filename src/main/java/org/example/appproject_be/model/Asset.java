@@ -17,8 +17,7 @@ import lombok.ToString;
 public class Asset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private Long idx;
+    private Long asset_idx;
     private String assetType;
     @NotNull(message = "Serial Number should not be null or blank")
     @Column(unique = true)
@@ -26,12 +25,10 @@ public class Asset {
     private String dept;
     private String manufacturer;
     private String assetName;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "idx")
+    @OneToOne(mappedBy = "asset")
     private Hardware hardware;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "idx")
+    @OneToOne(mappedBy = "asset")
     private Software software;
-
+    //asset entity
 
 }

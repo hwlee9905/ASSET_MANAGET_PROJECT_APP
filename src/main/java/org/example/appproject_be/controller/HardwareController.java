@@ -2,23 +2,33 @@ package org.example.appproject_be.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.appproject_be.dto.HardwareDto;
 import org.example.appproject_be.model.Asset;
 import org.example.appproject_be.model.Hardware;
 import org.example.appproject_be.service.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController //@Controller + @ResponseBody
 @CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
+@Slf4j
+@ControllerAdvice
 public class HardwareController {
     private final HardwareService hardwareService;
     @PostMapping("/assets/hardware")
-    public HardwareDto saveAsset(@Valid @RequestBody HardwareDto hardwareDto){
-        return hardwareService.saveHardware(hardwareDto);
+    public Hardware saveAsset(@Valid @RequestBody Hardware hardware){
+        return hardwareService.saveHardware(hardware);
+    }
+    @DeleteMapping("/assets/hardware")
+    public void deleteAsset (@RequestParam("idx") Long idx){
+        hardwareService.deleteHardware(idx);
+    }
+    @GetMapping("/assets/hardwares") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
+    public List<HardwareDto> getAssets(){
+        return hardwareService.getHardwares();
     }
 }

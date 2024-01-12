@@ -2,6 +2,7 @@ package org.example.appproject_be.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.appproject_be.model.Asset;
 import org.example.appproject_be.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,14 @@ import java.util.Optional;
 @RestController //@Controller + @ResponseBody
 @CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
+@Slf4j
+@ControllerAdvice
 public class AssetController {
     private final AssetService assetService;
     //localhost:8080/assets
     @GetMapping("/assets") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
     public List<Asset> getAssets(){
+
         return assetService.getAssets();
     }
     //localhost:8080/assets/index
@@ -32,10 +36,10 @@ public class AssetController {
     }
     @PutMapping("/assets/{index}")
     public Asset updateAsset (@PathVariable Long index, @RequestBody Asset asset){
-        asset.setIdx(index);
+        asset.setAsset_idx(index);
         return assetService.updateAsset(asset);
     }
-    //localhost:8080/assets?index=index123
+    //localhost:8080/assets?idx=idx2123
     @DeleteMapping("/assets")
     public void deleteAsset (@RequestParam("idx") Long idx){
         assetService.deleteAsset(idx);
