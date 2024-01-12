@@ -12,9 +12,7 @@ import java.util.Date;
 @Getter@Setter
 public class Hardware {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idx")
-    private Long idx;
+    private Long hw_idx;
     private String cpu;
     private String ssd;
     private String hdd;
@@ -28,7 +26,8 @@ public class Hardware {
     @Column(name = "preUser")
     private String previousUser;
     private String location;
-    @OneToOne(mappedBy = "idx")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "asset_idx")
     private Asset asset;
 
 }
