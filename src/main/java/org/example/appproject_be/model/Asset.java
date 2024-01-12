@@ -29,6 +29,6 @@ public class Asset {
     private Hardware hardware;
     @OneToOne(mappedBy = "asset")
     private Software software;
-
+    //asset entity
 
 }
