@@ -8,10 +8,13 @@ import org.example.appproject_be.repository.AssetRepository;
 import org.example.appproject_be.repository.HardwareRepository;
 import org.example.appproject_be.repository.SoftwareRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,4 +63,37 @@ public class SoftwareServiceImpl implements SoftwareService{
 
         return softwareDtos;
     }
+
+    @Override
+    public SoftwareDto getSoftware(Long id) {
+        try {
+            Optional<Software> softwareOptional = softwareRepository.findById(id);
+
+            if (softwareOptional.isPresent()) {
+                Software software = softwareOptional.get();
+                SoftwareDto softwareDto = new SoftwareDto();
+
+                // set asset
+                softwareDto.setAsset_idx(software.getAsset().getAsset_idx());
+                softwareDto.setAssetType(software.getAsset().getAssetType());
+                softwareDto.setSn(software.getAsset().getSn());
+                softwareDto.setDept(software.getAsset().getDept());
+                softwareDto.setManufacturer(software.getAsset().getManufacturer());
+                softwareDto.setAssetName(software.getAsset().getAssetName());
+
+                // set software-specific properties
+                softwareDto.setExpiryDate(software.getExpiryDate());
+
+                return softwareDto;
+            } else {
+                // Handle the case where software with the given ID is not found
+                throw new DataRetrievalFailureException("Software not found with ID: " + id);
+                // Or return null, depending on your application's logic
+            }
+        } catch (Exception e) {
+            // Handle other exceptions such as database errors
+            throw new RuntimeException("Error retrieving software with ID: " + id, e);
+        }
+    }
+
 }

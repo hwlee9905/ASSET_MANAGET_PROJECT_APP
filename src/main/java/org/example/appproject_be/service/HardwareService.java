@@ -14,4 +14,6 @@ public interface HardwareService {
     void deleteHardware(Long Id);
 
     List<HardwareDto> getHardwares();
+    List<HardwareDto> getHardwares(String sortAttr, String sortOrder);
+    HardwareDto getHardware(Long Id);
 }

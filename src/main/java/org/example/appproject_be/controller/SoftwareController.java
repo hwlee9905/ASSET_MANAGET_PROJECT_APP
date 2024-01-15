@@ -34,4 +34,8 @@ public class SoftwareController {
     public List<SoftwareDto> getAssets(){
         return softwareService.getSoftwares();
     }
+    @GetMapping("/assets/software")
+    public SoftwareDto getAsset(@RequestParam Long idx){
+        return softwareService.getSoftware(idx);
+    }
 }

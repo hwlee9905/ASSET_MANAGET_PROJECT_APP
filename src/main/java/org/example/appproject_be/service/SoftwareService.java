@@ -10,4 +10,5 @@ public interface SoftwareService {
     Software saveSoftware(Software software);
     void deleteSoftware(Long Id);
     List<SoftwareDto> getSoftwares();
+    SoftwareDto getSoftware(Long id);
 }
