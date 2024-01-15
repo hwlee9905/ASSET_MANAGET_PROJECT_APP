@@ -17,14 +17,14 @@ import lombok.ToString;
 public class Asset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long asset_idx;
-    private String assetType;
+    private Long assetidx;
+    private String assettype;
     @NotNull(message = "Serial Number should not be null or blank")
     @Column(unique = true)
     private String sn;
     private String dept;
     private String manufacturer;
-    private String assetName;
+    private String assetname;
     @OneToOne(mappedBy = "asset")
     private Hardware hardware;
     @OneToOne(mappedBy = "asset")

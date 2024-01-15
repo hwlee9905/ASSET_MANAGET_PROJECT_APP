@@ -36,7 +36,7 @@ public class AssetController {
     }
     @PutMapping("/assets/{index}")
     public Asset updateAsset (@PathVariable Long index, @RequestBody Asset asset){
-        asset.setAsset_idx(index);
+        asset.setAssetidx(index);
         return assetService.updateAsset(asset);
     }
     //localhost:8080/assets?idx=idx2123

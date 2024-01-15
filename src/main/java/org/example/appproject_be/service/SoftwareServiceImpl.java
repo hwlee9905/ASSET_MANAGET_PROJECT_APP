@@ -27,7 +27,7 @@ public class SoftwareServiceImpl implements SoftwareService{
 
         try {
             assetRepository.save(software.getAsset());
-            software.setSw_idx(software.getAsset().getAsset_idx());
+            software.setSwidx(software.getAsset().getAssetidx());
             softwareRepository.save(software);
             return software;
         } catch (DataIntegrityViolationException e) {
@@ -46,16 +46,16 @@ public class SoftwareServiceImpl implements SoftwareService{
         List<Software> softwareList = softwareRepository.findAll();
 
         List<SoftwareDto> softwareDtos = softwareList.stream()
-                .sorted((software1, software2) -> software2.getAsset().getAssetName().compareTo(software1.getAsset().getAssetName()))
+                .sorted((software1, software2) -> software2.getAsset().getAssetname().compareTo(software1.getAsset().getAssetname()))
                 .map(software -> {
                     SoftwareDto softwareDto = new SoftwareDto();
-                    softwareDto.setAsset_idx(software.getAsset().getAsset_idx());
-                    softwareDto.setAssetType(software.getAsset().getAssetType());
+                    softwareDto.setAsset_idx(software.getAsset().getAssetidx());
+                    softwareDto.setAssetType(software.getAsset().getAssettype());
                     softwareDto.setSn(software.getAsset().getSn());
                     softwareDto.setDept(software.getAsset().getDept());
                     softwareDto.setManufacturer(software.getAsset().getManufacturer());
-                    softwareDto.setAssetName(software.getAsset().getAssetName());
-                    softwareDto.setExpiryDate(software.getExpiryDate());
+                    softwareDto.setAssetName(software.getAsset().getAssetname());
+                    softwareDto.setExpiryDate(software.getExpirydate());
 
                     return softwareDto;
                 })
@@ -74,15 +74,15 @@ public class SoftwareServiceImpl implements SoftwareService{
                 SoftwareDto softwareDto = new SoftwareDto();
 
                 // set asset
-                softwareDto.setAsset_idx(software.getAsset().getAsset_idx());
-                softwareDto.setAssetType(software.getAsset().getAssetType());
+                softwareDto.setAsset_idx(software.getAsset().getAssetidx());
+                softwareDto.setAssetType(software.getAsset().getAssettype());
                 softwareDto.setSn(software.getAsset().getSn());
                 softwareDto.setDept(software.getAsset().getDept());
                 softwareDto.setManufacturer(software.getAsset().getManufacturer());
-                softwareDto.setAssetName(software.getAsset().getAssetName());
+                softwareDto.setAssetName(software.getAsset().getAssetname());
 
                 // set software-specific properties
-                softwareDto.setExpiryDate(software.getExpiryDate());
+                softwareDto.setExpiryDate(software.getExpirydate());
 
                 return softwareDto;
             } else {

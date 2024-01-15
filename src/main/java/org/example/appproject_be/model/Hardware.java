@@ -12,22 +12,22 @@ import java.util.Date;
 @Getter@Setter
 public class Hardware {
     @Id
-    private Long hw_idx;
+    private Long hwidx;
     private String cpu;
     private String ssd;
     private String hdd;
     private String memory;
     private String status;
-    private LocalDateTime usageDuration;
-    private LocalDateTime returnDate;
-    private LocalDateTime assignedDate;
-    @Column(name = "curUser")
-    private String currentUser;
-    @Column(name = "preUser")
-    private String previousUser;
+    private LocalDateTime usageduration;
+    private LocalDateTime returndate;
+    private LocalDateTime assigneddate;
+    @Column(name = "curuser")
+    private String currentuser;
+    @Column(name = "preuser")
+    private String previoususer;
     private String location;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "asset_idx")
+    @JoinColumn(name = "assetidx")
     private Asset asset;
 
 }

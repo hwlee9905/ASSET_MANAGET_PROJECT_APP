@@ -23,7 +23,7 @@ public class HardwareServiceImpl implements HardwareService{
     @Override
     public Hardware saveHardware(Hardware hardware) {
         Asset asset = assetRepository.save(hardware.getAsset());
-        hardware.setHw_idx(asset.getAsset_idx());
+        hardware.setHwidx(asset.getAssetidx());
         hardwareRepository.save(hardware);
         return hardware;
     }
@@ -44,26 +44,26 @@ public class HardwareServiceImpl implements HardwareService{
                     HardwareDto hardwareDto = new HardwareDto();
 
                     //set hardware
-                    hardwareDto.setHw_idx(hardware.getHw_idx());
+                    hardwareDto.setHw_idx(hardware.getHwidx());
                     hardwareDto.setCpu(hardware.getCpu());
                     hardwareDto.setSsd(hardware.getSsd());
                     hardwareDto.setHdd(hardware.getHdd());
                     hardwareDto.setMemory(hardware.getMemory());
                     hardwareDto.setStatus(hardware.getStatus());
-                    hardwareDto.setUsageDuration(hardware.getUsageDuration());
-                    hardwareDto.setReturnDate(hardware.getReturnDate());
-                    hardwareDto.setAssignedDate(hardware.getAssignedDate());
-                    hardwareDto.setCurrentUser(hardware.getCurrentUser());
-                    hardwareDto.setPreviousUser(hardware.getPreviousUser());
+                    hardwareDto.setUsageDuration(hardware.getUsageduration());
+                    hardwareDto.setReturnDate(hardware.getReturndate());
+                    hardwareDto.setAssignedDate(hardware.getAssigneddate());
+                    hardwareDto.setCurrentUser(hardware.getCurrentuser());
+                    hardwareDto.setPreviousUser(hardware.getPrevioususer());
                     hardwareDto.setLocation(hardware.getLocation());
 
                     //set asset
-                    hardwareDto.setAsset_idx(hardware.getAsset().getAsset_idx());
-                    hardwareDto.setAssetType(hardware.getAsset().getAssetType());
+                    hardwareDto.setAsset_idx(hardware.getAsset().getAssetidx());
+                    hardwareDto.setAssetType(hardware.getAsset().getAssettype());
                     hardwareDto.setSn(hardware.getAsset().getSn());
                     hardwareDto.setDept(hardware.getAsset().getDept());
                     hardwareDto.setManufacturer(hardware.getAsset().getManufacturer());
-                    hardwareDto.setAssetName(hardware.getAsset().getAssetName());
+                    hardwareDto.setAssetName(hardware.getAsset().getAssetname());
                     return hardwareDto;
                 }).collect(Collectors.toList());
 
@@ -78,7 +78,7 @@ public class HardwareServiceImpl implements HardwareService{
                 String sortBy = "asset." + sortAttr;
                 hardwareList = hardwareRepository.findAll(Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
             } else {
-                hardwareList = hardwareRepository.findAll(Sort.by( "_hw_fgdfgfdg_"));
+                hardwareList = hardwareRepository.findAll(Sort.by(Sort.Direction.fromString(sortOrder), sortAttr));
             }
         } else {
             throw new IllegalArgumentException("Both sort attribute (sortAttr) and sort order (sortOrder) must be provided");
@@ -88,26 +88,26 @@ public class HardwareServiceImpl implements HardwareService{
                     HardwareDto hardwareDto = new HardwareDto();
 
                     // 하드웨어 설정
-                    hardwareDto.setHw_idx(hardware.getHw_idx());
+                    hardwareDto.setHw_idx(hardware.getHwidx());
                     hardwareDto.setCpu(hardware.getCpu());
                     hardwareDto.setSsd(hardware.getSsd());
                     hardwareDto.setHdd(hardware.getHdd());
                     hardwareDto.setMemory(hardware.getMemory());
                     hardwareDto.setStatus(hardware.getStatus());
-                    hardwareDto.setUsageDuration(hardware.getUsageDuration());
-                    hardwareDto.setReturnDate(hardware.getReturnDate());
-                    hardwareDto.setAssignedDate(hardware.getAssignedDate());
-                    hardwareDto.setCurrentUser(hardware.getCurrentUser());
-                    hardwareDto.setPreviousUser(hardware.getPreviousUser());
+                    hardwareDto.setUsageDuration(hardware.getUsageduration());
+                    hardwareDto.setReturnDate(hardware.getReturndate());
+                    hardwareDto.setAssignedDate(hardware.getAssigneddate());
+                    hardwareDto.setCurrentUser(hardware.getCurrentuser());
+                    hardwareDto.setPreviousUser(hardware.getPrevioususer());
                     hardwareDto.setLocation(hardware.getLocation());
 
                     // 자산 설정
-                    hardwareDto.setAsset_idx(hardware.getAsset().getAsset_idx());
-                    hardwareDto.setAssetType(hardware.getAsset().getAssetType());
+                    hardwareDto.setAsset_idx(hardware.getAsset().getAssetidx());
+                    hardwareDto.setAssetType(hardware.getAsset().getAssettype());
                     hardwareDto.setSn(hardware.getAsset().getSn());
                     hardwareDto.setDept(hardware.getAsset().getDept());
                     hardwareDto.setManufacturer(hardware.getAsset().getManufacturer());
-                    hardwareDto.setAssetName(hardware.getAsset().getAssetName());
+                    hardwareDto.setAssetName(hardware.getAsset().getAssetname());
                     return hardwareDto;
                 }).collect(Collectors.toList());
 
@@ -123,26 +123,26 @@ public class HardwareServiceImpl implements HardwareService{
                 HardwareDto hardwareDto = new HardwareDto();
 
                 // set hardware
-                hardwareDto.setHw_idx(hardware.getHw_idx());
+                hardwareDto.setHw_idx(hardware.getHwidx());
                 hardwareDto.setCpu(hardware.getCpu());
                 hardwareDto.setSsd(hardware.getSsd());
                 hardwareDto.setHdd(hardware.getHdd());
                 hardwareDto.setMemory(hardware.getMemory());
                 hardwareDto.setStatus(hardware.getStatus());
-                hardwareDto.setUsageDuration(hardware.getUsageDuration());
-                hardwareDto.setReturnDate(hardware.getReturnDate());
-                hardwareDto.setAssignedDate(hardware.getAssignedDate());
-                hardwareDto.setCurrentUser(hardware.getCurrentUser());
-                hardwareDto.setPreviousUser(hardware.getPreviousUser());
+                hardwareDto.setUsageDuration(hardware.getUsageduration());
+                hardwareDto.setReturnDate(hardware.getReturndate());
+                hardwareDto.setAssignedDate(hardware.getAssigneddate());
+                hardwareDto.setCurrentUser(hardware.getCurrentuser());
+                hardwareDto.setPreviousUser(hardware.getPrevioususer());
                 hardwareDto.setLocation(hardware.getLocation());
 
                 // set asset
-                hardwareDto.setAsset_idx(hardware.getAsset().getAsset_idx());
-                hardwareDto.setAssetType(hardware.getAsset().getAssetType());
+                hardwareDto.setAsset_idx(hardware.getAsset().getAssetidx());
+                hardwareDto.setAssetType(hardware.getAsset().getAssettype());
                 hardwareDto.setSn(hardware.getAsset().getSn());
                 hardwareDto.setDept(hardware.getAsset().getDept());
                 hardwareDto.setManufacturer(hardware.getAsset().getManufacturer());
-                hardwareDto.setAssetName(hardware.getAsset().getAssetName());
+                hardwareDto.setAssetName(hardware.getAsset().getAssetname());
 
                 return hardwareDto;
             } else {
