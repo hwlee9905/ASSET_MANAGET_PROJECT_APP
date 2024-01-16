@@ -13,22 +13,22 @@ import java.time.LocalDateTime;
 @Getter@Setter
 @RequiredArgsConstructor
 public class HardwareDto {
-    private Long hw_idx;
+    private Long hwidx;
     private String cpu;
     private String ssd;
     private String hdd;
     private String memory;
     private String status;
-    private LocalDateTime usageDuration;
-    private LocalDateTime returnDate;
-    private LocalDateTime assignedDate;
-    private String currentUser;
-    private String previousUser;
+    private LocalDateTime usageduration;
+    private LocalDateTime returndate;
+    private LocalDateTime assigneddate;
+    private String currentuser;
+    private String previoususer;
     private String location;
-    private Long asset_idx;
-    private String assetType;
+    private Long assetidx;
+    private String assettype;
     private String sn;
     private String dept;
     private String manufacturer;
-    private String assetName;
+    private String assetname;
 }

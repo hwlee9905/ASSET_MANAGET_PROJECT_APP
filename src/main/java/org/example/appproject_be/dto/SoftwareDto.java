@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 @Setter
 @RequiredArgsConstructor
 public class SoftwareDto {
-    private Long asset_idx;
-    private String assetType;
+    private Long assetidx;
+    private String assettype;
     private String sn;
     private String dept;
     private String manufacturer;
-    private String assetName;
-    private LocalDateTime expiryDate;
+    private String assetname;
+    private LocalDateTime expirydate;
 }
