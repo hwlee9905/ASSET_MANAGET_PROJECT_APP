@@ -49,13 +49,13 @@ public class SoftwareServiceImpl implements SoftwareService{
                 .sorted((software1, software2) -> software2.getAsset().getAssetname().compareTo(software1.getAsset().getAssetname()))
                 .map(software -> {
                     SoftwareDto softwareDto = new SoftwareDto();
-                    softwareDto.setAsset_idx(software.getAsset().getAssetidx());
-                    softwareDto.setAssetType(software.getAsset().getAssettype());
+                    softwareDto.setAssetidx(software.getAsset().getAssetidx());
+                    softwareDto.setAssettype(software.getAsset().getAssettype());
                     softwareDto.setSn(software.getAsset().getSn());
                     softwareDto.setDept(software.getAsset().getDept());
                     softwareDto.setManufacturer(software.getAsset().getManufacturer());
-                    softwareDto.setAssetName(software.getAsset().getAssetname());
-                    softwareDto.setExpiryDate(software.getExpirydate());
+                    softwareDto.setAssetname(software.getAsset().getAssetname());
+                    softwareDto.setExpirydate(software.getExpirydate());
 
                     return softwareDto;
                 })
@@ -74,15 +74,15 @@ public class SoftwareServiceImpl implements SoftwareService{
                 SoftwareDto softwareDto = new SoftwareDto();
 
                 // set asset
-                softwareDto.setAsset_idx(software.getAsset().getAssetidx());
-                softwareDto.setAssetType(software.getAsset().getAssettype());
+                softwareDto.setAssetidx(software.getAsset().getAssetidx());
+                softwareDto.setAssettype(software.getAsset().getAssettype());
                 softwareDto.setSn(software.getAsset().getSn());
                 softwareDto.setDept(software.getAsset().getDept());
                 softwareDto.setManufacturer(software.getAsset().getManufacturer());
-                softwareDto.setAssetName(software.getAsset().getAssetname());
+                softwareDto.setAssetname(software.getAsset().getAssetname());
 
                 // set software-specific properties
-                softwareDto.setExpiryDate(software.getExpirydate());
+                softwareDto.setExpirydate(software.getExpirydate());
 
                 return softwareDto;
             } else {
