@@ -19,9 +19,9 @@ public class HardwareDto {
     private String hdd;
     private String memory;
     private String status;
-    private LocalDateTime usageduration;
-    private LocalDateTime returndate;
-    private LocalDateTime assigneddate;
+    private String usageduration;
+    private String returndate;
+    private String assigneddate;
     private String currentuser;
     private String previoususer;
     private String location;

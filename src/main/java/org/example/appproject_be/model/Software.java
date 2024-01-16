@@ -13,7 +13,7 @@ import java.util.Date;
 public class Software {
     @Id
     private Long swidx;
-    private LocalDateTime expirydate;
+    private String expirydate;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "assetidx")
     private Asset asset;
