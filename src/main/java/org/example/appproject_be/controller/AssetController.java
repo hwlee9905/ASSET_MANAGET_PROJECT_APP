@@ -3,6 +3,7 @@ package org.example.appproject_be.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.appproject_be.dto.AssetDto;
 import org.example.appproject_be.model.Asset;
 import org.example.appproject_be.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,13 @@ public class AssetController {
     private final AssetService assetService;
     //localhost:8080/assets
     @GetMapping("/assets") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
-    public List<Asset> getAssets(){
+    public List<AssetDto> getAssets(){
 
         return assetService.getAssets();
     }
     //localhost:8080/assets/index
-    @GetMapping("/assets/{index}")
-    public Asset getAsset(@PathVariable Long index){
+    @GetMapping("/asset")
+    public AssetDto getAsset(@RequestParam("idx") Long index){
         return assetService.getAsset(index);
     }
     @PostMapping("/assets")
@@ -39,10 +40,5 @@ public class AssetController {
         asset.setAssetidx(index);
         return assetService.updateAsset(asset);
     }
-    //localhost:8080/assets?idx=idx2123
-    @DeleteMapping("/assets")
-    public void deleteAsset (@RequestParam("idx") Long idx){
-        assetService.deleteAsset(idx);
-//        return "Deleting the asset details for the assetCode " + assetCode;
-    }
+
 }

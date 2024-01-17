@@ -20,6 +20,7 @@ public class Hardware {
     private String memory;
     private String status;
 
+    private String deadline;
     private String usageduration;
     private String returndate;
     private String assigneddate;
