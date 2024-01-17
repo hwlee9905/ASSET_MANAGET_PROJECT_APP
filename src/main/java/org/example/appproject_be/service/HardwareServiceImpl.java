@@ -21,17 +21,20 @@ public class HardwareServiceImpl implements HardwareService{
     private final HardwareRepository hardwareRepository;
     private final AssetRepository assetRepository;
     @Override
-    public Hardware saveHardware(Hardware hardware) {
-        Asset asset = assetRepository.save(hardware.getAsset());
-        hardware.setHwidx(asset.getAssetidx());
-        hardwareRepository.save(hardware);
-        return hardware;
+    public HardwareDto saveHardware(HardwareDto hardwaredto) {
+        Asset asset = Asset.createAsset(hardwaredto);
+        assetRepository.save(asset);
+        Hardware hardware = Asset.createHardware(hardwaredto);
+        asset.setHardware(hardware);
+        hardwareRepository.save(asset.getHardware());
+
+        hardwaredto.setAssetidx(asset.getAssetidx());
+        hardwaredto.setHwidx(hardware.getHwidx());
+        return hardwaredto;
     }
 
     @Override
     public void deleteHardware(Long Id) {
-
-        assetRepository.deleteById(Id);
         hardwareRepository.deleteById(Id);
     }
 

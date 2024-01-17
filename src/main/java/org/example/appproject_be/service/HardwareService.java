@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface HardwareService {
 //    List<HardwareDto> findHardwareWithAssetInfo(Long Id);
-    Hardware saveHardware(Hardware hardware);
+    HardwareDto saveHardware(HardwareDto hardware);
     void deleteHardware(Long Id);
 
     List<HardwareDto> getHardwares();

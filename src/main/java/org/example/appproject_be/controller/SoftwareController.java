@@ -21,7 +21,7 @@ public class SoftwareController {
     private final SoftwareService softwareService;
     //localhost:8080/assets/software
     @PostMapping("/assets/software")
-    public Software saveAsset(@Valid @RequestBody Software software){
+    public SoftwareDto saveAsset(@Valid @RequestBody SoftwareDto software){
         return softwareService.saveSoftware(software);
     }
     //localhost:8080/assets/software?idx=idx2123

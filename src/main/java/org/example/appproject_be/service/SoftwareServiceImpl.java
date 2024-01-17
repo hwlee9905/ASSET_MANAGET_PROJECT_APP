@@ -2,6 +2,7 @@ package org.example.appproject_be.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.appproject_be.dto.SoftwareDto;
+import org.example.appproject_be.model.Asset;
 import org.example.appproject_be.model.Hardware;
 import org.example.appproject_be.model.Software;
 import org.example.appproject_be.repository.AssetRepository;
@@ -23,13 +24,18 @@ public class SoftwareServiceImpl implements SoftwareService{
     private final SoftwareRepository softwareRepository;
     private final AssetRepository assetRepository;
     @Override
-    public Software saveSoftware(Software software){
+    public SoftwareDto saveSoftware(SoftwareDto softwareDto){
 
         try {
-            assetRepository.save(software.getAsset());
-            software.setSwidx(software.getAsset().getAssetidx());
-            softwareRepository.save(software);
-            return software;
+            Asset asset = Asset.createAsset(softwareDto);
+            assetRepository.save(asset);
+            Software software = Asset.createSoftware(softwareDto);
+            asset.setSoftware(software);
+            softwareRepository.save(asset.getSoftware());
+
+            softwareDto.setAssetidx(asset.getAssetidx());
+            softwareDto.setSwidx(asset.getSoftware().getSwidx());
+            return softwareDto;
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("이미 등록된 S/N입니다.");
         }
@@ -37,7 +43,6 @@ public class SoftwareServiceImpl implements SoftwareService{
 
     @Override
     public void deleteSoftware(Long Id) {
-        assetRepository.deleteById(Id);
         softwareRepository.deleteById(Id);
     }
 

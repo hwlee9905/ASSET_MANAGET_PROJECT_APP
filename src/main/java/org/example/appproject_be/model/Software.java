@@ -12,9 +12,11 @@ import java.util.Date;
 @Getter@Setter
 public class Software {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long swidx;
     private String expirydate;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "assetidx")
     private Asset asset;
+
 }

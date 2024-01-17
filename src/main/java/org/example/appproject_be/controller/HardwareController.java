@@ -22,7 +22,7 @@ public class HardwareController {
     private final HardwareService hardwareService;
 
     @PostMapping("/assets/hardware")
-    public Hardware saveAsset(@Valid @RequestBody Hardware hardware) {
+    public HardwareDto saveAsset(@Valid @RequestBody HardwareDto hardware) {
         return hardwareService.saveHardware(hardware);
     }
 

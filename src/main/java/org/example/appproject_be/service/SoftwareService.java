@@ -7,7 +7,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public interface SoftwareService {
-    Software saveSoftware(Software software);
+    SoftwareDto saveSoftware(SoftwareDto software);
     void deleteSoftware(Long Id);
     List<SoftwareDto> getSoftwares();
     SoftwareDto getSoftware(Long id);
