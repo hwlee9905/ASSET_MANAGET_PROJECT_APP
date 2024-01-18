@@ -31,14 +31,6 @@ public class AssetController {
     public AssetDto getAsset(@RequestParam("idx") Long index){
         return assetService.getAsset(index);
     }
-    @PostMapping("/assets")
-    public Asset saveAsset(@Valid @RequestBody Asset asset){
-        return assetService.saveAsset(asset);
-    }
-    @PutMapping("/assets/{index}")
-    public Asset updateAsset (@PathVariable Long index, @RequestBody Asset asset){
-        asset.setAssetidx(index);
-        return assetService.updateAsset(asset);
-    }
+
 
 }

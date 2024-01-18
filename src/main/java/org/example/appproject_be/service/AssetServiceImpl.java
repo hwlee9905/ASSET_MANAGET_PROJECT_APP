@@ -41,16 +41,4 @@ public class AssetServiceImpl implements AssetService {
         }
         throw new DataRetrievalFailureException("Asset not found with ID: " + id);
     }
-
-    @Override
-    public Asset saveAsset(Asset asset) {
-        return assetRepository.save(asset);
-    }
-
-    @Override
-    public Asset updateAsset(Asset asset) {
-        return assetRepository.save(asset);
-    }
-
-
 }
