@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface AssetService {
     List<AssetDto> getAssets();
-    Asset getAsset(Long id);
+    AssetDto getAsset(Long id);
     Asset saveAsset(Asset asset);
 
     Asset updateAsset(Asset asset);

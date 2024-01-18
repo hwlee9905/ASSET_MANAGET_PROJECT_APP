@@ -38,4 +38,14 @@ public class SoftwareController {
     public SoftwareDto getAsset(@RequestParam Long idx){
         return softwareService.getSoftware(idx);
     }
+    @PutMapping("/assets/software/update")
+    public SoftwareDto updateAsset(@RequestParam("swidx") Long swidx, @RequestParam("assetidx") Long assetidx,  @RequestBody SoftwareDto softwareDto) {
+        softwareDto.setSwidx(swidx);
+        softwareDto.setAssetidx(assetidx);
+        return softwareService.updateSoftware(softwareDto);
+    }
+    @GetMapping("/assets/softwares/sort") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
+    public List<SoftwareDto> getAssets(@RequestParam("sortAttr") String sortAttr, @RequestParam("sortOrder") String sortOrder) {
+        return softwareService.getSoftwares(sortAttr, sortOrder);
+    }
 }

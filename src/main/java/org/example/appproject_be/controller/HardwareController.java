@@ -45,4 +45,11 @@ public class HardwareController {
         return hardwareService.getHardware(idx);
     }
 
+    @PutMapping("/assets/hardware/update")
+    public HardwareDto updateAsset(@RequestParam("hwidx") Long hwidx, @RequestParam("assetidx") Long assetidx,  @RequestBody HardwareDto hardwareDto) {
+        hardwareDto.setHwidx(hwidx);
+        hardwareDto.setAssetidx(assetidx);
+        return hardwareService.updateHardware(hardwareDto);
+    }
+
 }

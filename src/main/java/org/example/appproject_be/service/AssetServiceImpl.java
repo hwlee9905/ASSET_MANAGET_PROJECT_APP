@@ -7,11 +7,13 @@ import org.example.appproject_be.model.Hardware;
 import org.example.appproject_be.repository.AssetRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -35,11 +37,9 @@ public class AssetServiceImpl implements AssetService {
     public AssetDto getAsset(Long id) {
         Optional<Asset> asset = assetRepository.findById(id);
         if (asset.isPresent()) {
-            return asset.stream().map(this::convertToDto).collect();
-            
+            return asset.map(AssetDto::convertToDto).orElse(null);
         }
-        throw new RuntimeException("Asset is not found for the id " + id);
-
+        throw new DataRetrievalFailureException("Asset not found with ID: " + id);
     }
 
     @Override

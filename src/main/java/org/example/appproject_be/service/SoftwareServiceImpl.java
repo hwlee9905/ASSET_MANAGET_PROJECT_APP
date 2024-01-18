@@ -11,11 +11,11 @@ import org.example.appproject_be.repository.SoftwareRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +42,23 @@ public class SoftwareServiceImpl implements SoftwareService{
     }
 
     @Override
+    public SoftwareDto updateSoftware(SoftwareDto softwareDto) {
+        try {
+            Asset asset = Asset.createAsset(softwareDto);
+            asset.setAssetidx(softwareDto.getAssetidx());
+            assetRepository.save(asset);
+            Software software = Asset.createSoftware(softwareDto);
+            software.setSwidx(softwareDto.getSwidx());
+            asset.setSoftware(software);
+            softwareRepository.save(asset.getSoftware());
+
+            return softwareDto;
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("이미 등록된 S/N입니다.");
+        }
+    }
+
+    @Override
     public void deleteSoftware(Long Id) {
         softwareRepository.deleteById(Id);
     }
@@ -51,9 +68,9 @@ public class SoftwareServiceImpl implements SoftwareService{
         List<Software> softwareList = softwareRepository.findAll();
 
         List<SoftwareDto> softwareDtos = softwareList.stream()
-                .sorted((software1, software2) -> software2.getAsset().getAssetname().compareTo(software1.getAsset().getAssetname()))
                 .map(software -> {
                     SoftwareDto softwareDto = new SoftwareDto();
+                    softwareDto.setSwidx(software.getSwidx());
                     softwareDto.setAssetidx(software.getAsset().getAssetidx());
                     softwareDto.setAssettype(software.getAsset().getAssettype());
                     softwareDto.setSn(software.getAsset().getSn());
@@ -66,6 +83,37 @@ public class SoftwareServiceImpl implements SoftwareService{
                 })
                 .collect(Collectors.toList());
 
+        return softwareDtos;
+    }
+
+    @Override
+    public List<SoftwareDto> getSoftwares(String sortAttr, String sortOrder) {
+        List<Software> softwareList;
+        if (sortAttr != null && !sortAttr.isEmpty() && sortOrder != null && !sortOrder.isEmpty()) {
+            if (isSortAttrInAsset(sortAttr)) {
+                String sortBy = "asset." + sortAttr;
+                softwareList = softwareRepository.findAll(Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
+            } else {
+                softwareList = softwareRepository.findAll(Sort.by(Sort.Direction.fromString(sortOrder), sortAttr));
+            }
+        } else {
+            throw new IllegalArgumentException("Both sort attribute (sortAttr) and sort order (sortOrder) must be provided");
+        }
+
+        List<SoftwareDto> softwareDtos = softwareList.stream()
+                .map(software -> {
+                    SoftwareDto softwareDto = new SoftwareDto();
+                    softwareDto.setAssetidx(software.getAsset().getAssetidx());
+                    softwareDto.setAssettype(software.getAsset().getAssettype());
+                    softwareDto.setSn(software.getAsset().getSn());
+                    softwareDto.setDept(software.getAsset().getDept());
+                    softwareDto.setManufacturer(software.getAsset().getManufacturer());
+                    softwareDto.setAssetname(software.getAsset().getAssetname());
+                    softwareDto.setSwidx(software.getSwidx());
+                    softwareDto.setExpirydate(software.getExpirydate());
+
+                    return softwareDto;
+                }).toList();
         return softwareDtos;
     }
 
@@ -87,6 +135,7 @@ public class SoftwareServiceImpl implements SoftwareService{
                 softwareDto.setAssetname(software.getAsset().getAssetname());
 
                 // set software-specific properties
+                softwareDto.setSwidx(software.getSwidx());
                 softwareDto.setExpirydate(software.getExpirydate());
 
                 return softwareDto;
@@ -100,5 +149,11 @@ public class SoftwareServiceImpl implements SoftwareService{
             throw new RuntimeException("Error retrieving software with ID: " + id, e);
         }
     }
+    private boolean isSortAttrInAsset(String sortAttr) {
+        Set<String> assetProperties = new HashSet<>(Arrays.asList(
+                "assetidx", "assetType", "sn", "dept", "manufacturer", "assetName"
+        ));
 
+        return assetProperties.contains(sortAttr);
+    }
 }

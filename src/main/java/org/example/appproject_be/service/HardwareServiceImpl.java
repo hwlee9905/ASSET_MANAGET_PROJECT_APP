@@ -21,16 +21,31 @@ public class HardwareServiceImpl implements HardwareService{
     private final HardwareRepository hardwareRepository;
     private final AssetRepository assetRepository;
     @Override
-    public HardwareDto saveHardware(HardwareDto hardwaredto) {
-        Asset asset = Asset.createAsset(hardwaredto);
+    public HardwareDto saveHardware(HardwareDto hardwareDto) {
+        Asset asset = Asset.createAsset(hardwareDto);
+        log.info("assetidx = " + asset.getAssetidx());
         assetRepository.save(asset);
-        Hardware hardware = Asset.createHardware(hardwaredto);
+        Hardware hardware = Asset.createHardware(hardwareDto);
+        asset.setHardware(hardware);
+        log.info("hwidx = " + hardware.getHwidx());
+        hardwareRepository.save(asset.getHardware());
+
+        hardwareDto.setAssetidx(asset.getAssetidx());
+        hardwareDto.setHwidx(hardware.getHwidx());
+        return hardwareDto;
+    }
+
+    @Override
+    public HardwareDto updateHardware(HardwareDto hardwareDto) {
+        Asset asset = Asset.createAsset(hardwareDto);
+        asset.setAssetidx(hardwareDto.getAssetidx());
+        assetRepository.save(asset);
+        Hardware hardware = Asset.createHardware(hardwareDto);
+        hardware.setHwidx(hardwareDto.getHwidx());
         asset.setHardware(hardware);
         hardwareRepository.save(asset.getHardware());
 
-        hardwaredto.setAssetidx(asset.getAssetidx());
-        hardwaredto.setHwidx(hardware.getHwidx());
-        return hardwaredto;
+        return hardwareDto;
     }
 
     @Override
@@ -59,6 +74,7 @@ public class HardwareServiceImpl implements HardwareService{
                     hardwareDto.setCurrentuser(hardware.getCurrentuser());
                     hardwareDto.setPrevioususer(hardware.getPrevioususer());
                     hardwareDto.setLocation(hardware.getLocation());
+                    hardwareDto.setDeadline(hardware.getDeadline());
 
                     //set asset
                     hardwareDto.setAssetidx(hardware.getAsset().getAssetidx());
@@ -103,6 +119,7 @@ public class HardwareServiceImpl implements HardwareService{
                     hardwareDto.setCurrentuser(hardware.getCurrentuser());
                     hardwareDto.setPrevioususer(hardware.getPrevioususer());
                     hardwareDto.setLocation(hardware.getLocation());
+                    hardwareDto.setDeadline(hardware.getDeadline());
 
                     // 자산 설정
                     hardwareDto.setAssetidx(hardware.getAsset().getAssetidx());
@@ -138,6 +155,7 @@ public class HardwareServiceImpl implements HardwareService{
                 hardwareDto.setCurrentuser(hardware.getCurrentuser());
                 hardwareDto.setPrevioususer(hardware.getPrevioususer());
                 hardwareDto.setLocation(hardware.getLocation());
+                hardwareDto.setDeadline(hardware.getDeadline());
 
                 // set asset
                 hardwareDto.setAssetidx(hardware.getAsset().getAssetidx());
@@ -160,7 +178,7 @@ public class HardwareServiceImpl implements HardwareService{
     }
     private boolean isSortAttrInAsset(String sortAttr) {
         Set<String> assetProperties = new HashSet<>(Arrays.asList(
-                "assetType", "sn", "dept", "manufacturer", "assetName"
+                "assetidx", "assetType", "sn", "dept", "manufacturer", "assetName"
         ));
 
         return assetProperties.contains(sortAttr);

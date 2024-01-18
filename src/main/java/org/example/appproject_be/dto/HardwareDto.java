@@ -31,4 +31,28 @@ public class HardwareDto {
     private String dept;
     private String manufacturer;
     private String assetname;
+    private String deadline;
+    public static HardwareDto convertToDto(Hardware hardware) {
+        HardwareDto hardwareDto = new HardwareDto();
+        hardwareDto.setDeadline(hardware.getDeadline());
+        hardwareDto.setHwidx(hardware.getHwidx());
+        hardwareDto.setCpu(hardware.getCpu());
+        hardwareDto.setSsd(hardware.getSsd());
+        hardwareDto.setHdd(hardware.getHdd());
+        hardwareDto.setMemory(hardware.getMemory());
+        hardwareDto.setStatus(hardware.getStatus());
+        hardwareDto.setUsageduration(hardware.getUsageduration());
+        hardwareDto.setReturndate(hardware.getReturndate());
+        hardwareDto.setAssigneddate(hardware.getAssigneddate());
+        hardwareDto.setCurrentuser(hardware.getCurrentuser());
+        hardwareDto.setPrevioususer(hardware.getPrevioususer());
+        hardwareDto.setLocation(hardware.getLocation());
+        hardwareDto.setAssetidx(hardware.getAsset().getAssetidx());
+        hardwareDto.setAssettype(hardware.getAsset().getAssettype());
+        hardwareDto.setSn(hardware.getAsset().getSn());
+        hardwareDto.setDept(hardware.getAsset().getDept());
+        hardwareDto.setManufacturer(hardware.getAsset().getManufacturer());
+        hardwareDto.setAssetname(hardware.getAsset().getAssetname());
+        return hardwareDto;
+    }
 }

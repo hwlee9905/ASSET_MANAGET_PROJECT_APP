@@ -16,4 +16,6 @@ public interface HardwareService {
     List<HardwareDto> getHardwares();
     List<HardwareDto> getHardwares(String sortAttr, String sortOrder);
     HardwareDto getHardware(Long Id);
+
+    HardwareDto updateHardware(HardwareDto hardwareDto);
 }

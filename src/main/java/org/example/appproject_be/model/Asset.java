@@ -73,6 +73,7 @@ public class Asset {
         hardware.setCurrentuser(hardwareDto.getCurrentuser());
         hardware.setPrevioususer(hardwareDto.getPrevioususer());
         hardware.setLocation(hardwareDto.getLocation());
+        hardware.setDeadline(hardwareDto.getDeadline());
         return hardware;
     }
 }
