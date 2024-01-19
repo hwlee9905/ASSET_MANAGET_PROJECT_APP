@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Table
 @Entity
@@ -32,7 +33,6 @@ public class Hardware {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "assetidx")
     private Asset asset;
-
     public Hardware() {
     }
 }
