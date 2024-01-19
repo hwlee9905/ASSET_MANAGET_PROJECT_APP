@@ -81,7 +81,7 @@ public class SoftwareServiceImpl implements SoftwareService{
                     softwareDto.setManufacturer(software.getAsset().getManufacturer());
                     softwareDto.setAssetname(software.getAsset().getAssetname());
                     softwareDto.setExpirydate(software.getExpirydate());
-                    softwareDto.setCurrentuser(software.getCurrentuser());
+                    softwareDto.setCuruser(software.getCurrentuser());
                     return softwareDto;
                 })
                 .collect(Collectors.toList());
@@ -114,7 +114,7 @@ public class SoftwareServiceImpl implements SoftwareService{
                     softwareDto.setAssetname(software.getAsset().getAssetname());
                     softwareDto.setSwidx(software.getSwidx());
                     softwareDto.setExpirydate(software.getExpirydate());
-                    softwareDto.setCurrentuser(software.getCurrentuser());
+                    softwareDto.setCuruser(software.getCurrentuser());
                     return softwareDto;
                 }).toList();
         return softwareDtos;
@@ -139,7 +139,7 @@ public class SoftwareServiceImpl implements SoftwareService{
             // set software-specific properties
             softwareDto.setSwidx(software.getSwidx());
             softwareDto.setExpirydate(software.getExpirydate());
-            softwareDto.setCurrentuser(software.getCurrentuser());
+            softwareDto.setCuruser(software.getCurrentuser());
             return softwareDto;
         } else {
             // Handle the case where software with the given ID is not found
