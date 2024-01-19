@@ -19,7 +19,6 @@ import java.util.Optional;
 @CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Slf4j
-@ControllerAdvice
 public class AssetController {
     private final AssetService assetService;
     //localhost:8080/assets
