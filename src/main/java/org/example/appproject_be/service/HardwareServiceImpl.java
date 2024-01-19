@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.appproject_be.dto.HardwareDto;
 import org.example.appproject_be.model.Asset;
 import org.example.appproject_be.model.Hardware;
+import org.example.appproject_be.model.Software;
 import org.example.appproject_be.repository.AssetRepository;
 import org.example.appproject_be.repository.HardwareRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,17 +24,22 @@ public class HardwareServiceImpl implements HardwareService{
     private final AssetRepository assetRepository;
     @Override
     public HardwareDto saveHardware(HardwareDto hardwareDto) {
-        Asset asset = Asset.createAsset(hardwareDto);
-        log.info("assetidx = " + asset.getAssetidx());
-        assetRepository.save(asset);
-        Hardware hardware = Asset.createHardware(hardwareDto);
-        asset.setHardware(hardware);
-        log.info("hwidx = " + hardware.getHwidx());
-        hardwareRepository.save(asset.getHardware());
+        try{
+            Asset asset = Asset.createAsset(hardwareDto);
+            log.info("assetidx = " + asset.getAssetidx());
+            assetRepository.save(asset);
+            Hardware hardware = Asset.createHardware(hardwareDto);
+            asset.setHardware(hardware);
+            log.info("hwidx = " + hardware.getHwidx());
+            hardwareRepository.save(asset.getHardware());
 
-        hardwareDto.setAssetidx(asset.getAssetidx());
-        hardwareDto.setHwidx(hardware.getHwidx());
-        return hardwareDto;
+            hardwareDto.setAssetidx(asset.getAssetidx());
+            hardwareDto.setHwidx(hardware.getHwidx());
+            return hardwareDto;
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("이미 등록된 S/N입니다.");
+        }
+
     }
 
     @Override
@@ -50,7 +57,12 @@ public class HardwareServiceImpl implements HardwareService{
 
     @Override
     public void deleteHardware(Long Id) {
-        hardwareRepository.deleteById(Id);
+        Optional<Hardware> hardwareOptional = hardwareRepository.findById(Id);
+        if (hardwareOptional.isPresent()) {
+            hardwareRepository.deleteById(Id);
+        } else {
+            throw new DataRetrievalFailureException("Hardware not found with ID: " + Id);
+        }
     }
 
     @Override
@@ -136,42 +148,38 @@ public class HardwareServiceImpl implements HardwareService{
 
     @Override
     public HardwareDto getHardware(Long id) {
-        try {
-            Optional<Hardware> hardwareOptional = hardwareRepository.findById(id);
-            if (hardwareOptional.isPresent()) {
-                Hardware hardware = hardwareOptional.get();
-                HardwareDto hardwareDto = new HardwareDto();
+        Optional<Hardware> hardwareOptional = hardwareRepository.findById(id);
+        if (hardwareOptional.isPresent()) {
+            Hardware hardware = hardwareOptional.get();
+            HardwareDto hardwareDto = new HardwareDto();
 
-                // set hardware
-                hardwareDto.setHwidx(hardware.getHwidx());
-                hardwareDto.setCpu(hardware.getCpu());
-                hardwareDto.setSsd(hardware.getSsd());
-                hardwareDto.setHdd(hardware.getHdd());
-                hardwareDto.setMemory(hardware.getMemory());
-                hardwareDto.setStatus(hardware.getStatus());
-                hardwareDto.setUsageduration(hardware.getUsageduration());
-                hardwareDto.setReturndate(hardware.getReturndate());
-                hardwareDto.setAssigneddate(hardware.getAssigneddate());
-                hardwareDto.setCurrentuser(hardware.getCurrentuser());
-                hardwareDto.setPrevioususer(hardware.getPrevioususer());
-                hardwareDto.setLocation(hardware.getLocation());
-                hardwareDto.setDeadline(hardware.getDeadline());
+            // set hardware
+            hardwareDto.setHwidx(hardware.getHwidx());
+            hardwareDto.setCpu(hardware.getCpu());
+            hardwareDto.setSsd(hardware.getSsd());
+            hardwareDto.setHdd(hardware.getHdd());
+            hardwareDto.setMemory(hardware.getMemory());
+            hardwareDto.setStatus(hardware.getStatus());
+            hardwareDto.setUsageduration(hardware.getUsageduration());
+            hardwareDto.setReturndate(hardware.getReturndate());
+            hardwareDto.setAssigneddate(hardware.getAssigneddate());
+            hardwareDto.setCurrentuser(hardware.getCurrentuser());
+            hardwareDto.setPrevioususer(hardware.getPrevioususer());
+            hardwareDto.setLocation(hardware.getLocation());
+            hardwareDto.setDeadline(hardware.getDeadline());
 
-                // set asset
-                hardwareDto.setAssetidx(hardware.getAsset().getAssetidx());
-                hardwareDto.setAssettype(hardware.getAsset().getAssettype());
-                hardwareDto.setSn(hardware.getAsset().getSn());
-                hardwareDto.setDept(hardware.getAsset().getDept());
-                hardwareDto.setManufacturer(hardware.getAsset().getManufacturer());
-                hardwareDto.setAssetname(hardware.getAsset().getAssetname());
+            // set asset
+            hardwareDto.setAssetidx(hardware.getAsset().getAssetidx());
+            hardwareDto.setAssettype(hardware.getAsset().getAssettype());
+            hardwareDto.setSn(hardware.getAsset().getSn());
+            hardwareDto.setDept(hardware.getAsset().getDept());
+            hardwareDto.setManufacturer(hardware.getAsset().getManufacturer());
+            hardwareDto.setAssetname(hardware.getAsset().getAssetname());
 
-                return hardwareDto;
-            } else {
-                // Handle the case where hardware with the given ID is not found
-                throw new DataRetrievalFailureException("Hardware not found with ID: " + id);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Error retrieving hardware with ID: " + id, e);
+            return hardwareDto;
+        } else {
+            // Handle the case where hardware with the given ID is not found
+            throw new DataRetrievalFailureException("Hardware not found with ID: " + id);
         }
 
 

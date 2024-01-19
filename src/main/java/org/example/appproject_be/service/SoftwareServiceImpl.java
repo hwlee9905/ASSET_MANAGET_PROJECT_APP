@@ -37,30 +37,33 @@ public class SoftwareServiceImpl implements SoftwareService{
             softwareDto.setSwidx(asset.getSoftware().getSwidx());
             return softwareDto;
         } catch (DataIntegrityViolationException e) {
-            throw new IllegalArgumentException("이미 등록된 S/N입니다.");
+            throw new DataIntegrityViolationException("이미 등록된 S/N입니다.");
         }
     }
 
     @Override
     public SoftwareDto updateSoftware(SoftwareDto softwareDto) {
-        try {
-            Asset asset = Asset.createAsset(softwareDto);
-            asset.setAssetidx(softwareDto.getAssetidx());
-            assetRepository.save(asset);
-            Software software = Asset.createSoftware(softwareDto);
-            software.setSwidx(softwareDto.getSwidx());
-            asset.setSoftware(software);
-            softwareRepository.save(asset.getSoftware());
+        Asset asset = Asset.createAsset(softwareDto);
+        asset.setAssetidx(softwareDto.getAssetidx());
+        assetRepository.save(asset);
+        Software software = Asset.createSoftware(softwareDto);
+        software.setSwidx(softwareDto.getSwidx());
+        asset.setSoftware(software);
+        softwareRepository.save(asset.getSoftware());
 
-            return softwareDto;
-        } catch (DataIntegrityViolationException e) {
-            throw new IllegalArgumentException("이미 등록된 S/N입니다.");
-        }
+        return softwareDto;
     }
 
     @Override
     public void deleteSoftware(Long Id) {
-        softwareRepository.deleteById(Id);
+
+        Optional<Software> softwareOptional = softwareRepository.findById(Id);
+        if (softwareOptional.isPresent()) {
+            softwareRepository.deleteById(Id);
+        } else {
+            throw new DataRetrievalFailureException("Software not found with ID: " + Id);
+        }
+
     }
 
     @Override
@@ -97,7 +100,7 @@ public class SoftwareServiceImpl implements SoftwareService{
                 softwareList = softwareRepository.findAll(Sort.by(Sort.Direction.fromString(sortOrder), sortAttr));
             }
         } else {
-            throw new IllegalArgumentException("Both sort attribute (sortAttr) and sort order (sortOrder) must be provided");
+            throw new MissingFormatArgumentException("Both sort attribute (sortAttr) and sort order (sortOrder) must be provided");
         }
 
         List<SoftwareDto> softwareDtos = softwareList.stream()
@@ -119,34 +122,29 @@ public class SoftwareServiceImpl implements SoftwareService{
 
     @Override
     public SoftwareDto getSoftware(Long id) {
-        try {
-            Optional<Software> softwareOptional = softwareRepository.findById(id);
+        Optional<Software> softwareOptional = softwareRepository.findById(id);
 
-            if (softwareOptional.isPresent()) {
-                Software software = softwareOptional.get();
-                SoftwareDto softwareDto = new SoftwareDto();
+        if (softwareOptional.isPresent()) {
+            Software software = softwareOptional.get();
+            SoftwareDto softwareDto = new SoftwareDto();
 
-                // set asset
-                softwareDto.setAssetidx(software.getAsset().getAssetidx());
-                softwareDto.setAssettype(software.getAsset().getAssettype());
-                softwareDto.setSn(software.getAsset().getSn());
-                softwareDto.setDept(software.getAsset().getDept());
-                softwareDto.setManufacturer(software.getAsset().getManufacturer());
-                softwareDto.setAssetname(software.getAsset().getAssetname());
+            // set asset
+            softwareDto.setAssetidx(software.getAsset().getAssetidx());
+            softwareDto.setAssettype(software.getAsset().getAssettype());
+            softwareDto.setSn(software.getAsset().getSn());
+            softwareDto.setDept(software.getAsset().getDept());
+            softwareDto.setManufacturer(software.getAsset().getManufacturer());
+            softwareDto.setAssetname(software.getAsset().getAssetname());
 
-                // set software-specific properties
-                softwareDto.setSwidx(software.getSwidx());
-                softwareDto.setExpirydate(software.getExpirydate());
+            // set software-specific properties
+            softwareDto.setSwidx(software.getSwidx());
+            softwareDto.setExpirydate(software.getExpirydate());
 
-                return softwareDto;
-            } else {
-                // Handle the case where software with the given ID is not found
-                throw new DataRetrievalFailureException("Software not found with ID: " + id);
-                // Or return null, depending on your application's logic
-            }
-        } catch (Exception e) {
-            // Handle other exceptions such as database errors
-            throw new RuntimeException("Error retrieving software with ID: " + id, e);
+            return softwareDto;
+        } else {
+            // Handle the case where software with the given ID is not found
+            throw new DataRetrievalFailureException("Software not found with ID: " + id);
+            // Or return null, depending on your application's logic
         }
     }
     private boolean isSortAttrInAsset(String sortAttr) {

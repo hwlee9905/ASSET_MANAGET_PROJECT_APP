@@ -7,6 +7,8 @@ import org.example.appproject_be.dto.HardwareDto;
 import org.example.appproject_be.dto.SoftwareDto;
 import org.example.appproject_be.model.Software;
 import org.example.appproject_be.service.SoftwareService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLIntegrityConstraintViolationException;
