@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class SoftwareServiceImpl implements SoftwareService{
     private final SoftwareRepository softwareRepository;
     private final AssetRepository assetRepository;
+    private final HistoryService historyService;
     @Override
     public SoftwareDto saveSoftware(SoftwareDto softwareDto){
 
@@ -35,6 +36,8 @@ public class SoftwareServiceImpl implements SoftwareService{
 
             softwareDto.setAssetidx(asset.getAssetidx());
             softwareDto.setSwidx(asset.getSoftware().getSwidx());
+
+            historyService.historyActionDeleteOrInsert(asset.getAssetidx(), "INSERT", asset.getAssettype());
             return softwareDto;
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("이미 등록된 S/N입니다.");
@@ -60,6 +63,7 @@ public class SoftwareServiceImpl implements SoftwareService{
         Optional<Software> softwareOptional = softwareRepository.findById(Id);
         if (softwareOptional.isPresent()) {
             softwareRepository.deleteById(Id);
+            historyService.historyActionDeleteOrInsert(softwareOptional.get().getAsset().getAssetidx(), "DELETE", softwareOptional.get().getAsset().getAssettype());
         } else {
             throw new DataRetrievalFailureException("Software not found with ID: " + Id);
         }

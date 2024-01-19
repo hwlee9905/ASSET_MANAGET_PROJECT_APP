@@ -28,8 +28,10 @@ public class SoftwareController {
     }
     //localhost:8080/assets/software?idx=idx2123
     @DeleteMapping("/assets/software")
-    public void deleteAsset (@RequestParam("idx") Long idx){
+    public ResponseEntity<String> deleteAsset (@RequestParam("idx") Long idx){
+
         softwareService.deleteSoftware(idx);
+        return new ResponseEntity<>("해당 자산을 삭제하였습니다.", HttpStatus.OK);
     }
     //localhost:8080/assets/softwares
     @GetMapping("/assets/softwares")

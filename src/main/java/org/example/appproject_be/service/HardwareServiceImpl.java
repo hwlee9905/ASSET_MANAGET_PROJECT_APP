@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class HardwareServiceImpl implements HardwareService{
     private final HardwareRepository hardwareRepository;
     private final AssetRepository assetRepository;
+    private final HistoryService historyService;
     @Override
     public HardwareDto saveHardware(HardwareDto hardwareDto) {
         try{
@@ -35,6 +36,9 @@ public class HardwareServiceImpl implements HardwareService{
 
             hardwareDto.setAssetidx(asset.getAssetidx());
             hardwareDto.setHwidx(hardware.getHwidx());
+
+            historyService.historyActionDeleteOrInsert(asset.getAssetidx(), "INSERT", asset.getAssettype());
+            //history save logic
             return hardwareDto;
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("이미 등록된 S/N입니다.");
@@ -60,6 +64,7 @@ public class HardwareServiceImpl implements HardwareService{
         Optional<Hardware> hardwareOptional = hardwareRepository.findById(Id);
         if (hardwareOptional.isPresent()) {
             hardwareRepository.deleteById(Id);
+            historyService.historyActionDeleteOrInsert(hardwareOptional.get().getAsset().getAssetidx(), "DELETE", hardwareOptional.get().getAsset().getAssettype());
         } else {
             throw new DataRetrievalFailureException("Hardware not found with ID: " + Id);
         }

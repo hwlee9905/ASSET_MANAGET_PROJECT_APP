@@ -9,6 +9,8 @@ import org.example.appproject_be.model.Hardware;
 import org.example.appproject_be.service.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +28,10 @@ public class HardwareController {
     }
 
     @DeleteMapping("/assets/hardware")
-    public void deleteAsset(@RequestParam("idx") Long idx) {
+    public ResponseEntity<String> deleteAsset(@RequestParam("idx") Long idx) {
+
         hardwareService.deleteHardware(idx);
+        return new ResponseEntity<>("해당 자산을 삭제하였습니다.", HttpStatus.OK);
     }
 
     @GetMapping("/assets/hardwares") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
