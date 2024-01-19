@@ -1,5 +1,7 @@
 package org.example.appproject_be.controller;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import java.util.Optional;
 public class AssetController {
     private final AssetService assetService;
     //localhost:8080/assets
+
     @GetMapping("/assets") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
     public List<AssetDto> getAssets(){
 

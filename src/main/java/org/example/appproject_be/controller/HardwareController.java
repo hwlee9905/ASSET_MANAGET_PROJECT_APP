@@ -17,7 +17,6 @@ import java.util.List;
 @CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Slf4j
-@ControllerAdvice
 public class HardwareController {
     private final HardwareService hardwareService;
 
