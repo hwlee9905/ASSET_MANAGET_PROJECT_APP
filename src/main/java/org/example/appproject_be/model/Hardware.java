@@ -25,9 +25,7 @@ public class Hardware {
     private String usageduration;
     private String returndate;
     private String assigneddate;
-    @Column(name = "curuser")
     private String currentuser;
-    @Column(name = "preuser")
     private String previoususer;
     private String location;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

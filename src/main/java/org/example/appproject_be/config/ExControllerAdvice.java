@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,11 +17,12 @@ import java.util.MissingFormatArgumentException;
 @Slf4j
 @RestControllerAdvice
 public class ExControllerAdvice {
+    @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler
-    public ErrorResult exHandle(DataIntegrityViolationException e) {
+    public ResponseEntity<ErrorResult> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         log.error("[DataIntegrityViolationException] error", e);
-        return new ErrorResult("DataIntegrityViolationException", "이미 등록된 S/N입니다.");
+        ErrorResult errorResult = new ErrorResult("DataIntegrityViolationException", "이미 등록된 S/N입니다.");
+        return new ResponseEntity<>(errorResult, HttpStatus.CONFLICT);
     }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler

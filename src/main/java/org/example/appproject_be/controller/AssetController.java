@@ -23,7 +23,7 @@ public class AssetController {
     private final AssetService assetService;
     //localhost:8080/assets
 
-    @GetMapping("/assets") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
+    @GetMapping("/assets/entire") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
     public List<AssetDto> getAssets(){
 
         return assetService.getAssets();

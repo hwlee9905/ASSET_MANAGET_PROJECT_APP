@@ -15,7 +15,6 @@ public class Software {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long swidx;
     private String expirydate;
-    @Column(name = "curuser")
     private String currentuser;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "assetidx")
