@@ -22,5 +22,6 @@ public class SoftwareDto {
     private String manufacturer;
     private String assetname;
     private String currentuser;
+    private String status;
 
 }

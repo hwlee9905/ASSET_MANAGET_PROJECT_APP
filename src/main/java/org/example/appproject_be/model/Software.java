@@ -16,6 +16,7 @@ public class Software {
     private Long swidx;
     private String expirydate;
     private String currentuser;
+    private String status;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "assetidx")
     private Asset asset;
