@@ -58,7 +58,7 @@ public class Asset {
     static public Software createSoftware(SoftwareDto softwareDto) {
         Software software = new Software();
         software.setExpirydate(softwareDto.getExpirydate());
-        software.setCurrentuser(softwareDto.getCuruser());
+        software.setCurrentuser(softwareDto.getCurrentuser());
         return software;
     }
     static public Hardware createHardware(HardwareDto hardwareDto) {
