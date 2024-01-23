@@ -45,7 +45,10 @@ public class LoginController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null) {
+        if (session == null) {
+            throw new IllegalStateException("해당 작업을 수행하기 위한 권한이 없습니다. 관리자 계정으로 로그인해주세요.");
+            
+        }else{
             session.invalidate();
         }
         return new ResponseEntity<>("LOGOUT SUCCESS", HttpStatus.OK);
