@@ -32,8 +32,18 @@ public class LoginController {
             return new ResponseEntity<>("LOGIN SUCCESS", HttpStatus.OK);
         }
     }
+    @PostMapping("/login/session")
+    public ResponseEntity<Manager> getSession(@SessionAttribute(name = ManagerDto.LOGIN_MANAGER, required = false) Manager manager, HttpServletRequest request) {
+        HttpSession session = request.getSession(false); // false로 설정하면 세션이 없으면 null을 반환
+        // 세션이 null이면 에러 반환
+        if (session == null) {
+            throw new IllegalStateException("해당 작업을 수행하기 위한 권한이 없습니다. 관리자 계정으로 로그인해주세요.");
+        }
+
+        return new ResponseEntity<>(manager, HttpStatus.OK);
+    }
     @PostMapping("/logout")
-    public ResponseEntity<String> logoutV3(HttpServletRequest request) {
+    public ResponseEntity<String> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();

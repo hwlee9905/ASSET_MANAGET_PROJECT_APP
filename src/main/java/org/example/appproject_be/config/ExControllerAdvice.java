@@ -48,5 +48,11 @@ public class ExControllerAdvice {
         log.error("[IllegalArgumentException] error", e);
         return new ErrorResult("IllegalArgumentException", "정렬 기준은 DESC 또는 ASC이어야 합니다.");
     }
+    @ResponseStatus(HttpStatus.GATEWAY_TIMEOUT)
+    @ExceptionHandler
+    public ErrorResult exHandle(IllegalStateException e) {
+        log.error("[IllegalStateException] error", e);
+        return new ErrorResult("IllegalStateException", "해당 작업을 수행하기 위한 권한이 없습니다. 관리자 계정으로 로그인해주세요.");
+    }
 
 }

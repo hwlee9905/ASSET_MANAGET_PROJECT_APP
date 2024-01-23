@@ -9,4 +9,5 @@ public class ManagerDto {
     private String password;
     private String email;
     private String name;
+
 }

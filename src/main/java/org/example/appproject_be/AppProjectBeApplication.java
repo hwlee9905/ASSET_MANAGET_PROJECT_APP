@@ -2,6 +2,7 @@ package org.example.appproject_be;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
+import org.example.appproject_be.service.ManagerService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AppProjectBeApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(AppProjectBeApplication.class, args);
 	}
 
