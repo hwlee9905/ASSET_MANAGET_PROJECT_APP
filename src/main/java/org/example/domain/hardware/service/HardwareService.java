@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.domain.hardware.dto.HardwareAssignDto;
 import org.example.domain.asset.entity.Asset;
 import org.example.domain.asset.repository.AssetRepository;
-import org.example.domain.hardware.dto.HardwareDto;
+import org.example.domain.hardware.dto.request.AssignHardwareDtoRequest;
 import org.example.domain.hardware.dto.request.SaveHardwareDtoRequest;
 import org.example.domain.hardware.dto.request.UpdateHardwareDtoRequest;
 import org.example.domain.hardware.dto.response.GetHardwaresDtoResponse;
@@ -31,31 +31,12 @@ public class HardwareService{
     private final AssetRepository assetRepository;
     private final HistoryService historyService;
     private final HardwareMapper hardwareMapper;
-    public void assignHardware(HardwareAssignDto hardwareAssignDto) {
-        Optional<Hardware> hardwareOptional = hardwareRepository.findById(hardwareAssignDto.getHwidx());
-
+    public void assignHardware(AssignHardwareDtoRequest assignHardwareDtoRequest, Long hwidx) {
+        Optional<Hardware> hardwareOptional = hardwareRepository.findById(hwidx);
         if (hardwareOptional.isPresent()) {
-            if (hardwareOptional.get().getAsset().getAssetidx() != hardwareAssignDto.getAssetidx()){
-                throw new DataRetrievalFailureException("Asset not found with ID: " + hardwareAssignDto.getAssetidx());
-            }
-            Optional<Asset> assetOptional = assetRepository.findById(hardwareOptional.get().getAsset().getAssetidx());
-
-            if (assetOptional.isPresent()) {
-                Asset asset = assetOptional.get();
-                hardwareAssignDto.setStatus(Status.ACTIVE);
-                hardwareAssignDto.setAssigndate(new Date());
-                asset.setAssetidx(hardwareAssignDto.getAssetidx());
-                assetRepository.save(asset);
-                Hardware hardware = hardwareOptional.get();
-                hardware.setHwidx(hardwareAssignDto.getHwidx());
-                hardware.setCurrentuser(hardwareAssignDto.getCurrentuser());
-                hardware.setStatus(hardwareAssignDto.getStatus());
-                hardware.setAssigneddate(hardwareAssignDto.getAssigndate());
-                hardware.setDeadline(hardwareAssignDto.getDeadline());
-                hardwareRepository.save(asset.getHardware());
-            } else {
-                throw new DataRetrievalFailureException("Hardware not found with ID" );
-            }
+            Hardware hardware = hardwareOptional.get();
+            hardwareMapper.assignHardwareFromDto(assignHardwareDtoRequest, hardware);
+            hardwareRepository.save(hardware);
         } else {
             // Handle the case where hardware with the given ID is not found
             throw new DataRetrievalFailureException("Hardware not found with ID" );
@@ -80,9 +61,8 @@ public class HardwareService{
     public void updateHardware(UpdateHardwareDtoRequest updateHardwareDtoRequest) {
         Optional<Asset> assetOptional = assetRepository.findById(updateHardwareDtoRequest.getAssetidx());
         if (assetOptional.isPresent()) {
-            Asset asset =  hardwareMapper.updateAssetFromDto(updateHardwareDtoRequest);
-            Hardware hardware = asset.getHardware();
-            hardwareRepository.save(hardware); // Hardware 저장
+            Asset asset = assetOptional.get();
+            hardwareMapper.updateAssetFromDto(updateHardwareDtoRequest, asset);
             assetRepository.save(asset);
 
         } else {
@@ -104,7 +84,7 @@ public class HardwareService{
         return hardwareList.stream()
                 .map(hardware -> {
                     GetHardwaresDtoResponse getHardwaresDtoResponse = new GetHardwaresDtoResponse();
-                    hardwareMapper.updateDtoFromEntity(getHardwaresDtoResponse, hardware, hardware.getAsset());
+                    hardwareMapper.updateDtoFromEntity(getHardwaresDtoResponse,hardware, hardware.getAsset());
                     return getHardwaresDtoResponse;
                 }).collect(Collectors.toList());
     }
@@ -123,7 +103,7 @@ public class HardwareService{
         return hardwareList.stream()
                 .map(hardware -> {
                     GetHardwaresDtoResponse getHardwaresDtoResponse = new GetHardwaresDtoResponse();
-                    hardwareMapper.updateDtoFromEntity(getHardwaresDtoResponse, hardware, hardware.getAsset());
+                    hardwareMapper.updateDtoFromEntity(getHardwaresDtoResponse,hardware, hardware.getAsset());
                     return getHardwaresDtoResponse;
                 }).collect(Collectors.toList());
     }
@@ -132,7 +112,7 @@ public class HardwareService{
         if (hardwareOptional.isPresent()) {
             Hardware hardware = hardwareOptional.get();
             GetHardwaresDtoResponse getHardwaresDtoResponse = new GetHardwaresDtoResponse();
-            hardwareMapper.updateDtoFromEntity(getHardwaresDtoResponse, hardware, hardware.getAsset());
+            hardwareMapper.updateDtoFromEntity(getHardwaresDtoResponse,hardware, hardware.getAsset());
             return getHardwaresDtoResponse;
         } else {
             // Handle the case where hardware with the given ID is not found
