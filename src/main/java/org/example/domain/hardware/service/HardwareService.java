@@ -41,8 +41,6 @@ public class HardwareService{
             // Handle the case where hardware with the given ID is not found
             throw new DataRetrievalFailureException("Hardware not found with ID" );
         }
-
-
     }
     public void saveHardware(SaveHardwareDtoRequest saveHardwareDtoRequest) {
         try{
@@ -52,11 +50,9 @@ public class HardwareService{
             assetRepository.save(asset);
             //history save logic
             historyService.historyActionDeleteOrInsert(asset.getAssetidx(), "INSERT", asset.getAssettype());
-
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("이미 등록된 S/N입니다.");
         }
-
     }
     public void updateHardware(UpdateHardwareDtoRequest updateHardwareDtoRequest) {
         Optional<Asset> assetOptional = assetRepository.findById(updateHardwareDtoRequest.getAssetidx());
@@ -119,13 +115,6 @@ public class HardwareService{
             throw new DataRetrievalFailureException("Hardware not found with ID: " + id);
         }
     }
-//    private boolean isSortAttrInAsset(String sortAttr) {
-//        Set<String> assetProperties = new HashSet<>(Arrays.asList(
-//                "assetidx", "assetType", "sn", "dept", "manufacturer", "assetName"
-//        ));
-//
-//        return assetProperties.contains(sortAttr);
-//    }
     private boolean isSortAttrInAsset(String sortAttr) {
         return Arrays.stream(AssetProperty.values())
                 .anyMatch(property -> property.getPropertyName().equals(sortAttr));
