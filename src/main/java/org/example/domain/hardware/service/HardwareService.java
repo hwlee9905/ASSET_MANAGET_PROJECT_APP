@@ -7,6 +7,7 @@ import org.example.domain.asset.entity.Asset;
 import org.example.domain.asset.repository.AssetRepository;
 import org.example.domain.hardware.dto.HardwareDto;
 import org.example.domain.hardware.dto.request.SaveHardwareDtoRequest;
+import org.example.domain.hardware.dto.request.UpdateHardwareDtoRequest;
 import org.example.domain.hardware.dto.response.GetHardwaresDtoResponse;
 import org.example.domain.hardware.mapper.HardwareMapper;
 import org.example.domain.hardware.repository.HardwareRepository;
@@ -65,13 +66,9 @@ public class HardwareService{
     public void saveHardware(SaveHardwareDtoRequest saveHardwareDtoRequest) {
         try{
             Asset asset = hardwareMapper.createAssetFromDto(saveHardwareDtoRequest);
-            log.info("asset toString" + asset.getHardware().getSsd());
+            Hardware hardware = asset.getHardware();
+            hardwareRepository.save(hardware); // Hardware 저장
             assetRepository.save(asset);
-
-            Hardware hardware = hardwareMapper.createHardwareFromDto(saveHardwareDtoRequest);
-            asset.setHardware(hardware);
-
-            hardwareRepository.save(asset.getHardware());
             //history save logic
             historyService.historyActionDeleteOrInsert(asset.getAssetidx(), "INSERT", asset.getAssettype());
 
@@ -80,37 +77,14 @@ public class HardwareService{
         }
 
     }
-    public void updateHardware(HardwareDto hardwareDto) {
-        Optional<Hardware> hardwareOptional = hardwareRepository.findById(hardwareDto.getHwidx());
+    public void updateHardware(UpdateHardwareDtoRequest updateHardwareDtoRequest) {
+        Optional<Asset> assetOptional = assetRepository.findById(updateHardwareDtoRequest.getAssetidx());
+        if (assetOptional.isPresent()) {
+            Asset asset =  hardwareMapper.updateAssetFromDto(updateHardwareDtoRequest);
+            Hardware hardware = asset.getHardware();
+            hardwareRepository.save(hardware); // Hardware 저장
+            assetRepository.save(asset);
 
-        if (hardwareOptional.isPresent()) {
-            if (hardwareOptional.get().getAsset().getAssetidx() != hardwareDto.getAssetidx()){
-                throw new DataRetrievalFailureException("Asset not found with ID: " + hardwareDto.getAssetidx());
-            }
-            Optional<Asset> assetOptional = assetRepository.findById(hardwareOptional.get().getAsset().getAssetidx());
-
-            if (assetOptional.isPresent()) {
-                Asset asset = assetOptional.get();
-                asset.setSn(hardwareDto.getSn());
-                asset.setDept(hardwareDto.getDept());
-                asset.setAssettype(hardwareDto.getAssettype());
-                asset.setManufacturer(hardwareDto.getManufacturer());
-                asset.setAssetname(hardwareDto.getAssetname());
-                asset.setAssetidx(hardwareDto.getAssetidx());
-                assetRepository.save(asset);
-                Hardware hardware = hardwareOptional.get();
-                hardware.setCpu(hardwareDto.getCpu());
-                hardware.setSsd(hardwareDto.getSsd());
-                hardware.setHdd(hardwareDto.getHdd());
-                hardware.setMemory(hardwareDto.getMemory());
-                hardware.setCurrentuser(hardwareDto.getCurrentuser());
-                hardware.setPrevioususer(hardwareDto.getPrevioususer());
-                hardware.setLocation(hardwareDto.getLocation());
-                hardware.setHwidx(hardwareDto.getHwidx());
-                hardwareRepository.save(asset.getHardware());
-            } else {
-                throw new DataRetrievalFailureException("Hardware not found with ID" );
-            }
         } else {
             // Handle the case where hardware with the given ID is not found
             throw new DataRetrievalFailureException("Hardware not found with ID" );

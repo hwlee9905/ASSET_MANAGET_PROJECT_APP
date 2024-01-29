@@ -1,6 +1,7 @@
 package org.example.domain.software.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.domain.asset.entity.Asset;
 import org.example.domain.asset.repository.AssetRepository;
 import org.example.domain.history.service.HistoryService;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SoftwareService{
     private final SoftwareRepository softwareRepository;
     private final AssetRepository assetRepository;
@@ -26,6 +28,7 @@ public class SoftwareService{
         try {
             Asset asset = Asset.createAsset(softwareDto);
             assetRepository.save(asset);
+            log.info("software = " + asset.toString());
             Software software = Asset.createSoftware(softwareDto);
             asset.setSoftware(software);
             softwareRepository.save(asset.getSoftware());

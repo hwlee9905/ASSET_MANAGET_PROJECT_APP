@@ -3,9 +3,12 @@ package org.example.domain.hardware.mapper;
 import lombok.Data;
 import org.example.domain.asset.entity.Asset;
 import org.example.domain.hardware.dto.request.SaveHardwareDtoRequest;
+import org.example.domain.hardware.dto.request.UpdateHardwareDtoRequest;
 import org.example.domain.hardware.dto.response.GetHardwaresDtoResponse;
 import org.example.domain.hardware.entity.Hardware;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +22,10 @@ public class HardwareMapper {
         modelMapper.map(asset, getHardwaresDtoResponse);
     }
     public Asset createAssetFromDto(SaveHardwareDtoRequest saveHardwareDtoRequest) {
+
         return modelMapper.map(saveHardwareDtoRequest, Asset.class);
     }
-    public Hardware createHardwareFromDto(SaveHardwareDtoRequest saveHardwareDtoRequest) {
-        return modelMapper.map(saveHardwareDtoRequest, Hardware.class);
+    public Asset updateAssetFromDto(UpdateHardwareDtoRequest updateHardwareDtoRequest) {
+        return modelMapper.map(updateHardwareDtoRequest, Asset.class);
     }
 }
