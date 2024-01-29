@@ -5,7 +5,6 @@ import org.example.types.Status;
 
 @Data
 public class UpdateHardwareDtoRequest {
-    private Long assetidx;
     private String cpu;
     private String ssd;
     private String hdd;

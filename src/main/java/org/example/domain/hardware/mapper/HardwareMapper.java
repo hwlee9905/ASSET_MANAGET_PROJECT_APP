@@ -26,11 +26,11 @@ public class HardwareMapper {
         modelMapper.map(asset, getHardwaresDtoResponse);
     }
     public Asset createAssetFromDto(SaveHardwareDtoRequest saveHardwareDtoRequest) {
-
         return modelMapper.map(saveHardwareDtoRequest, Asset.class);
     }
-    public void updateAssetFromDto(UpdateHardwareDtoRequest updateHardwareDtoRequest, Asset asset) {
-        modelMapper.map(updateHardwareDtoRequest, asset);
+    public void updateHardwareFromDto(UpdateHardwareDtoRequest updateHardwareDtoRequest, Hardware hardware) {
+        modelMapper.map(updateHardwareDtoRequest, hardware);
+        modelMapper.map(updateHardwareDtoRequest, hardware.getAsset());
     }
     public void assignHardwareFromDto(AssignHardwareDtoRequest assignHardwareDtoRequest, Hardware hardware) {
         modelMapper.map(assignHardwareDtoRequest, hardware);
