@@ -10,7 +10,7 @@ import java.util.List;
 
 //@Controller
 @RestController //@Controller + @ResponseBody
-
+@CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Slf4j
 public class AssetController {
