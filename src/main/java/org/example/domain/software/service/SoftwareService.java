@@ -18,6 +18,7 @@ import org.example.exception.DataDuplicationViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,15 +31,20 @@ public class SoftwareService{
     private final AssetRepository assetRepository;
     private final HistoryService historyService;
     private final SoftwareMapper softwareMapper;
-    public void saveSoftware(SaveSoftwareRequestDto saveSoftwareRequestDto){
-        try{
-            Asset asset = softwareMapper.createAssetFromDto(saveSoftwareRequestDto);
-            softwareRepository.save(asset.getSoftware()); // Software 저장
+    @Transactional
+    public void saveSoftware(SaveSoftwareRequestDto saveSoftwareRequestDto) {
+        Asset asset = softwareMapper.createAssetFromDto(saveSoftwareRequestDto);
+        Software software = asset.getSoftware();
+        try {
             assetRepository.save(asset);
-            //history save logic
-            historyService.historyActionDeleteOrInsert(asset.getAssetidx(), "INSERT", asset.getAssettype());
-        } catch (RuntimeException e) {
-            throw new DataDuplicationViolationException("이미 등록된 S/N입니다.");
+            software = softwareRepository.save(software);
+            software.setAsset(asset);
+
+            // 히스토리 저장 로직 추가
+        } catch (Exception e) {
+            // 롤백 처리
+            softwareRepository.delete(software);
+            throw e;
         }
     }
     public void updateSoftware(UpdateSoftwareRequestDto updateSoftwareRequestDto, Long swidx) {
@@ -59,7 +65,7 @@ public class SoftwareService{
         Optional<Software> softwareOptional = softwareRepository.findById(Id);
         if (softwareOptional.isPresent()) {
             softwareRepository.deleteById(Id);
-            historyService.historyActionDeleteOrInsert(softwareOptional.get().getAsset().getAssetidx(), "DELETE", softwareOptional.get().getAsset().getAssettype());
+//            historyService.historyActionDeleteOrInsert(softwareOptional.get().getAsset().getAssetidx(), "DELETE", softwareOptional.get().getAsset().getAssettype());
         } else {
             throw new SoftwareNotFountException("Software not found with ID: " + Id);
         }

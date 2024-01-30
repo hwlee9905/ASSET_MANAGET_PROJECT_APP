@@ -1,12 +1,12 @@
 package org.example.domain.history.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.domain.history.dto.HistoryDto;
+import org.example.domain.history.dto.SaveHistoryDto;
+import org.example.domain.history.dto.response.GetHistoriesResponseDto;
 import org.example.domain.history.entity.History;
+import org.example.domain.history.mapper.HistoryMapper;
 import org.example.domain.history.repository.HistoryRepository;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,36 +14,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HistoryService {
     private final HistoryRepository historyRepository;
-    public HistoryDto historyActionDeleteOrInsert(Long Id, String action, String assetType) {
-        History history = new History();
-        HistoryDto historyDto = new HistoryDto();
-        LocalDateTime currentdate = LocalDateTime.now();
-        String currentdateToString = currentdate.toString();
-        historyDto.setAssetid(Id);
-        historyDto.setAssettype(assetType);
-        historyDto.setAction(action);
-        historyDto.setChangeddate(currentdateToString);
-        history.setAssetid(Id);
-        history.setAssettype(assetType);
-        history.setAction(action);
-        history.setChangeddate(currentdateToString);
+    private final HistoryMapper historyMapper;
+    public void historyActionDeleteOrInsert(SaveHistoryDto saveHistoryDto) {
+        History history = historyMapper.createHistoryFromDto(saveHistoryDto);
         historyRepository.save(history);
-        return historyDto;
     }
-    public List<HistoryDto> getHistories() {
+    public List<GetHistoriesResponseDto> getHistories() {
         List<History> historyList = historyRepository.findAll();
-        List<HistoryDto> historyDtos = historyList.stream()
+        return historyList.stream()
                 .map(history -> {
-                    HistoryDto historyDto = new HistoryDto();
-                    historyDto.setAssetid(history.getAssetid());
-                    historyDto.setAction(history.getAction());
-                    historyDto.setHistoryid(history.getHistoryid());
-                    historyDto.setChangeddate(history.getChangeddate());
-                    historyDto.setJsondata(history.getJsondata());
-                    historyDto.setChangedby(history.getChangedby());
-                    historyDto.setAssettype(history.getAssettype());
-                    return historyDto;
+                    GetHistoriesResponseDto getHistoriesResponseDto = new GetHistoriesResponseDto();
+                    historyMapper.convertHistoryFromDto(getHistoriesResponseDto, history);
+                    return getHistoriesResponseDto;
                 }).collect(Collectors.toList());
-        return historyDtos;
     }
 }

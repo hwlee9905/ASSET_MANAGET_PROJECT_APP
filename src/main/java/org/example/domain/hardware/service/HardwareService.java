@@ -8,6 +8,7 @@ import org.example.domain.hardware.dto.request.AssignHardwareRequestDto;
 import org.example.domain.hardware.dto.request.SaveHardwareRequestDto;
 import org.example.domain.hardware.dto.request.UpdateHardwareRequestDto;
 import org.example.domain.hardware.dto.response.GetHardwaresResponseDto;
+import org.example.domain.history.dto.SaveHistoryDto;
 import org.example.exception.DataDuplicationViolationException;
 import org.example.exception.InvalidParameterException;
 import org.example.domain.hardware.exception.HardwareNotFoundException;
@@ -18,6 +19,7 @@ import org.example.domain.history.service.HistoryService;
 import org.example.types.AssetProperty;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,15 +43,22 @@ public class HardwareService{
             throw new HardwareNotFoundException("Hardware not found with ID" );
         }
     }
+    @Transactional
     public void saveHardware(SaveHardwareRequestDto saveHardwareRequestDto) {
-        try{
-            Asset asset = hardwareMapper.createAssetFromDto(saveHardwareRequestDto);
-            hardwareRepository.save(asset.getHardware()); // Hardware 저장
-            assetRepository.save(asset);
-            historyService.historyActionDeleteOrInsert(asset.getAssetidx(), "INSERT", asset.getAssettype());
-            //history save logic
-        } catch (RuntimeException e) {
-            throw new DataDuplicationViolationException("이미 등록된 S/N입니다.");
+        Asset asset = hardwareMapper.createAssetFromDto(saveHardwareRequestDto);
+        Hardware hardware = asset.getHardware();
+
+        try {
+            asset = assetRepository.save(asset);
+            hardware = hardwareRepository.save(hardware);
+            hardware.setAsset(asset);
+            historyService.historyActionDeleteOrInsert(
+                    hardwareMapper.convertSaveHistoryDtoFromAsset(asset)
+            );
+        } catch (Exception e) {
+            // 롤백 처리
+            hardwareRepository.delete(hardware);
+            throw e;
         }
     }
     public void updateHardware(UpdateHardwareRequestDto updateHardwareRequestDto, Long hwidx) {
@@ -68,7 +77,7 @@ public class HardwareService{
         Optional<Hardware> hardwareOptional = hardwareRepository.findById(Id);
         if (hardwareOptional.isPresent()) {
             hardwareRepository.deleteById(Id);
-            historyService.historyActionDeleteOrInsert(hardwareOptional.get().getAsset().getAssetidx(), "DELETE", hardwareOptional.get().getAsset().getAssettype());
+//            historyService.historyActionDeleteOrInsert(hardwareOptional.get().getAsset().getAssetidx(), "DELETE", hardwareOptional.get().getAsset().getAssettype());
         } else {
             throw new HardwareNotFoundException("Hardware not found with ID: " + Id);
         }

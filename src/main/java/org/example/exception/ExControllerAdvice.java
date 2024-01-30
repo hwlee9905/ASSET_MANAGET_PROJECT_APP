@@ -6,18 +6,20 @@ import org.example.domain.hardware.exception.HardwareNotFoundException;
 import org.example.domain.software.exception.SoftwareNotFountException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @Slf4j
 @RestControllerAdvice
 public class ExControllerAdvice {
-    @ExceptionHandler(DataDuplicationViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResult DataDuplicationViolationException(Exception e) {
-        log.error("[DataDuplicationViolationException] error", e);
-        return new ErrorResult("DataDuplicationViolationException", "이미 등록된 S/N입니다.");
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ErrorResult handleDuplicateEntryException(SQLIntegrityConstraintViolationException e) {
+        log.error("[SQLIntegrityConstraintViolationException] error", e);
+        return new ErrorResult("SQLIntegrityConstraintViolationException", "이미 등록된 S/N입니다.");
     }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({HardwareNotFoundException.class, SoftwareNotFountException.class})
