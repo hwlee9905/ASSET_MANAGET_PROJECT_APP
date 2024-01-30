@@ -1,13 +1,10 @@
 package org.example.domain.hardware.dto.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.example.types.Status;
 
-import java.util.Date;
-
-@Getter@Setter
-public class SaveHardwareDtoRequest {
+@Data
+public class UpdateHardwareRequestDto {
     private String cpu;
     private String ssd;
     private String hdd;

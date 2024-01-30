@@ -6,7 +6,6 @@ import lombok.*;
 import org.example.domain.software.dto.SoftwareDto;
 import org.example.domain.hardware.entity.Hardware;
 import org.example.domain.software.entity.Software;
-import org.example.types.Status;
 
 @Data
 @Entity

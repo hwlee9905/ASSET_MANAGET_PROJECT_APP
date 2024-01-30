@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class AssignHardwareDtoRequest {
+public class AssignHardwareRequestDto {
     @NotNull(message = "currentuser cannot be null")
     private String currentuser;
     @NotNull(message = "deadline cannot be null")

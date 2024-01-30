@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.asset.entity.Asset;
 import org.example.domain.asset.repository.AssetRepository;
-import org.example.domain.hardware.dto.request.AssignHardwareDtoRequest;
-import org.example.domain.hardware.dto.request.SaveHardwareDtoRequest;
-import org.example.domain.hardware.dto.request.UpdateHardwareDtoRequest;
+import org.example.domain.hardware.dto.request.AssignHardwareRequestDto;
+import org.example.domain.hardware.dto.request.SaveHardwareRequestDto;
+import org.example.domain.hardware.dto.request.UpdateHardwareRequestDto;
 import org.example.domain.hardware.dto.response.GetHardwaresDtoResponse;
 import org.example.domain.hardware.exception.DataDuplicationViolationException;
 import org.example.domain.hardware.exception.HardwareInvalidParameterException;
@@ -30,7 +30,7 @@ public class HardwareService{
     private final AssetRepository assetRepository;
     private final HistoryService historyService;
     private final HardwareMapper hardwareMapper;
-    public void assignHardware(AssignHardwareDtoRequest assignHardwareDtoRequest, Long hwidx) {
+    public void assignHardware(AssignHardwareRequestDto assignHardwareDtoRequest, Long hwidx) {
         Optional<Hardware> hardwareOptional = hardwareRepository.findById(hwidx);
         if (hardwareOptional.isPresent()) {
             Hardware hardware = hardwareOptional.get();
@@ -41,23 +41,22 @@ public class HardwareService{
             throw new HardwareNotFoundException("Hardware not found with ID" );
         }
     }
-    public void saveHardware(SaveHardwareDtoRequest saveHardwareDtoRequest) {
+    public void saveHardware(SaveHardwareRequestDto saveHardwareRequestDto) {
         try{
-            Asset asset = hardwareMapper.createAssetFromDto(saveHardwareDtoRequest);
-            Hardware hardware = asset.getHardware();
-            hardwareRepository.save(hardware); // Hardware 저장
+            Asset asset = hardwareMapper.createAssetFromDto(saveHardwareRequestDto);
+            hardwareRepository.save(asset.getHardware()); // Hardware 저장
             assetRepository.save(asset);
-            //history save logic
             historyService.historyActionDeleteOrInsert(asset.getAssetidx(), "INSERT", asset.getAssettype());
+            //history save logic
         } catch (RuntimeException e) {
             throw new DataDuplicationViolationException("이미 등록된 S/N입니다.");
         }
     }
-    public void updateHardware(UpdateHardwareDtoRequest updateHardwareDtoRequest, Long hwidx) {
+    public void updateHardware(UpdateHardwareRequestDto updateHardwareRequestDto, Long hwidx) {
         Optional<Hardware> hardwareOptional = hardwareRepository.findById(hwidx);
         if (hardwareOptional.isPresent()) {
             Hardware hardware = hardwareOptional.get();
-            hardwareMapper.updateHardwareFromDto(updateHardwareDtoRequest, hardware);
+            hardwareMapper.updateHardwareFromDto(updateHardwareRequestDto, hardware);
             hardwareRepository.save(hardware);
             assetRepository.save(hardware.getAsset());
         } else {

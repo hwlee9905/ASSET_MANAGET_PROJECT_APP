@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.software.dto.SoftwareDto;
+import org.example.domain.software.dto.request.SaveSoftwareRequestDto;
 import org.example.domain.software.service.SoftwareService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +23,13 @@ public class SoftwareController {
     private final SoftwareService softwareService;
     //localhost:8080/assets/software
     @PostMapping("/assets/software")
-    public ResponseEntity<String> saveAsset(@Valid @RequestBody SoftwareDto software, HttpServletRequest request){
+    public ResponseEntity<String> saveAsset(@Valid @RequestBody SaveSoftwareRequestDto saveSoftwareRequestDto, HttpServletRequest request){
         HttpSession session = request.getSession(false); // false로 설정하면 세션이 없으면 null을 반환
         // 세션이 null이면 에러 반환
         if (session == null) {
             throw new IllegalStateException("해당 작업을 수행하기 위한 권한이 없습니다. 관리자 계정으로 로그인해주세요.");
         }
-        softwareService.saveSoftware(software);
+        softwareService.saveSoftware(saveSoftwareRequestDto);
         return new ResponseEntity<>("해당 자산을 등록하였습니다.", HttpStatus.OK);
     }
     //localhost:8080/assets/software?idx=idx2123

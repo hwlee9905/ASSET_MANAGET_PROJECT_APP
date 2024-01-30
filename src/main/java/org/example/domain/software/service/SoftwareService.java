@@ -4,9 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.asset.entity.Asset;
 import org.example.domain.asset.repository.AssetRepository;
+import org.example.domain.hardware.entity.Hardware;
+import org.example.domain.hardware.exception.DataDuplicationViolationException;
+import org.example.domain.hardware.exception.HardwareNotFoundException;
 import org.example.domain.history.service.HistoryService;
+import org.example.domain.software.dto.request.SaveSoftwareRequestDto;
 import org.example.domain.software.entity.Software;
 import org.example.domain.software.dto.SoftwareDto;
+import org.example.domain.software.mapper.SoftwareMapper;
 import org.example.domain.software.repository.SoftwareRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
@@ -23,19 +28,18 @@ public class SoftwareService{
     private final SoftwareRepository softwareRepository;
     private final AssetRepository assetRepository;
     private final HistoryService historyService;
-    public void saveSoftware(SoftwareDto softwareDto){
+    private final SoftwareMapper softwareMapper;
+    public void saveSoftware(SaveSoftwareRequestDto saveSoftwareRequestDto){
+        try{
+            Asset asset = softwareMapper.createAssetFromDto(saveSoftwareRequestDto);
 
-        try {
-            Asset asset = Asset.createAsset(softwareDto);
+            softwareRepository.save(asset.getSoftware()); // Software 저장
             assetRepository.save(asset);
-            log.info("software = " + asset.toString());
-            Software software = Asset.createSoftware(softwareDto);
-            asset.setSoftware(software);
-            softwareRepository.save(asset.getSoftware());
 
+            //history save logic
             historyService.historyActionDeleteOrInsert(asset.getAssetidx(), "INSERT", asset.getAssettype());
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("이미 등록된 S/N입니다.");
+        } catch (RuntimeException e) {
+
         }
     }
     public void updateSoftware(SoftwareDto softwareDto) {
