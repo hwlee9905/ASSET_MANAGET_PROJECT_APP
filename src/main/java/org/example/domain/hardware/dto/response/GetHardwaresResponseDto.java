@@ -7,7 +7,7 @@ import org.example.types.Status;
 import java.util.Date;
 
 @Getter@Setter
-public class GetHardwaresDtoResponse {
+public class GetHardwaresResponseDto {
     private Long hwidx;
     private String cpu;
     private String ssd;

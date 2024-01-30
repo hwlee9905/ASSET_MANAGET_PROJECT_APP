@@ -5,7 +5,7 @@ import org.example.domain.asset.entity.Asset;
 import org.example.domain.hardware.dto.request.AssignHardwareRequestDto;
 import org.example.domain.hardware.dto.request.SaveHardwareRequestDto;
 import org.example.domain.hardware.dto.request.UpdateHardwareRequestDto;
-import org.example.domain.hardware.dto.response.GetHardwaresDtoResponse;
+import org.example.domain.hardware.dto.response.GetHardwaresResponseDto;
 import org.example.domain.hardware.entity.Hardware;
 import org.example.types.Status;
 import org.modelmapper.ModelMapper;
@@ -18,14 +18,14 @@ import java.util.Date;
 public class HardwareMapper {
     private final ModelMapper modelMapper;
 
-    public void updateDtoFromEntity(GetHardwaresDtoResponse getHardwaresDtoResponse,Hardware hardware, Asset asset) {
-        modelMapper.map(hardware,getHardwaresDtoResponse);
-        modelMapper.map(asset, getHardwaresDtoResponse);
+    public void convertDtoFromEntity(GetHardwaresResponseDto getHardwaresResponseDto, Hardware hardware, Asset asset) {
+        modelMapper.map(hardware, getHardwaresResponseDto);
+        modelMapper.map(asset, getHardwaresResponseDto);
     }
     public Asset createAssetFromDto(SaveHardwareRequestDto saveHardwareRequestDto) {
         return modelMapper.map(saveHardwareRequestDto, Asset.class);
     }
-    public void updateHardwareFromDto(UpdateHardwareRequestDto updateHardwareRequestDto, Hardware hardware) {
+    public void convertHardwareFromDto(UpdateHardwareRequestDto updateHardwareRequestDto, Hardware hardware) {
         modelMapper.map(updateHardwareRequestDto, hardware);
         modelMapper.map(updateHardwareRequestDto, hardware.getAsset());
     }
@@ -33,6 +33,5 @@ public class HardwareMapper {
         modelMapper.map(assignHardwareDtoRequest, hardware);
         hardware.setStatus(Status.ACTIVE);
         hardware.setAssigneddate(new Date());
-        hardware.setStatus(Status.ACTIVE);
     }
 }

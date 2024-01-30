@@ -13,7 +13,4 @@ public class SaveSoftwareRequestDto {
     private String dept;
     private String manufacturer;
     private String assetname;
-    private String currentuser;
-    private Status status;
-
 }

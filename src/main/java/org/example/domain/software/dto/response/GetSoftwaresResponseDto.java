@@ -1,16 +1,10 @@
-package org.example.domain.software.dto;
+package org.example.domain.software.dto.response;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.example.types.Status;
 
 import java.util.Date;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-public class SoftwareDto {
+public class GetSoftwaresResponseDto {
     private Long swidx;
     private Date expirydate;
     private Long assetidx;
