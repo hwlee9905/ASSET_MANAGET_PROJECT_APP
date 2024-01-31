@@ -39,7 +39,9 @@ public class SoftwareService{
             assetRepository.save(asset);
             software = softwareRepository.save(software);
             software.setAsset(asset);
-
+            historyService.historyActionDeleteOrInsert(
+                    softwareMapper.convertSaveHistoryDtoFromAsset(asset)
+            );
             // 히스토리 저장 로직 추가
         } catch (Exception e) {
             // 롤백 처리
