@@ -15,7 +15,6 @@ import java.util.List;
 @Slf4j
 public class AssetController {
     private final AssetService assetService;
-    //localhost:8080/assets
 
     @GetMapping("/assets/entire") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
     public List<AssetDto> getAssets(){
