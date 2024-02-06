@@ -12,6 +12,8 @@ import org.example.domain.history.dto.SaveHistoryDto;
 import org.example.types.Action;
 import org.example.types.Status;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -25,6 +27,7 @@ public class HardwareMapper {
     public void convertDtoFromEntity(GetHardwaresResponseDto getHardwaresResponseDto, Hardware hardware, Asset asset) {
         modelMapper.map(hardware, getHardwaresResponseDto);
         modelMapper.map(asset, getHardwaresResponseDto);
+
     }
     public Asset createAssetFromDto(SaveHardwareRequestDto saveHardwareRequestDto) {
         return modelMapper.map(saveHardwareRequestDto, Asset.class);

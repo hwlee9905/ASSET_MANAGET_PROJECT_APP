@@ -115,7 +115,7 @@ public class SoftwareService{
             throw new SoftwareNotFountException("Software not found with ID: " + id);
         }
     }
-    private boolean isSortAttrInAsset(String sortAttr) {
+    public boolean isSortAttrInAsset(String sortAttr) {
         Set<String> assetProperties = new HashSet<>(Arrays.asList(
                 "assetidx", "assetType", "sn", "dept", "manufacturer", "assetName"
         ));

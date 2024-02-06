@@ -38,7 +38,7 @@ public class HardwareService{
             Hardware hardware = hardwareOptional.get();
             hardwareMapper.assignHardwareFromDto(assignHardwareDtoRequest, hardware);
             hardwareRepository.save(hardware);
-            
+
         } else {
             // Handle the case where hardware with the given ID is not found
             throw new HardwareNotFoundException("Hardware not found with ID" );
@@ -88,7 +88,7 @@ public class HardwareService{
         return hardwareList.stream()
                 .map(hardware -> {
                     GetHardwaresResponseDto getHardwaresResponseDto = new GetHardwaresResponseDto();
-                    hardwareMapper.convertDtoFromEntity(getHardwaresResponseDto,hardware, hardware.getAsset());
+                    hardwareMapper.convertDtoFromEntity(getHardwaresResponseDto, hardware, hardware.getAsset());
                     return getHardwaresResponseDto;
                 }).collect(Collectors.toList());
     }
