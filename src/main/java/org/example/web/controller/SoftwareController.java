@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.login.exception.AuthenticationFailedException;
+import org.example.domain.login.service.LoginService;
+import org.example.domain.manager.entity.Manager;
 import org.example.domain.software.dto.request.SaveSoftwareRequestDto;
 import org.example.domain.software.dto.request.UpdateSoftwareRequestDto;
 import org.example.domain.software.dto.response.GetSoftwaresResponseDto;

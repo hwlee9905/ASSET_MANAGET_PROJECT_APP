@@ -1,9 +1,10 @@
 package org.example.domain.software.dto.response;
 
+import lombok.Data;
 import org.example.types.Status;
 
 import java.util.Date;
-
+@Data
 public class GetSoftwaresResponseDto {
     private Long swidx;
     private Date expirydate;

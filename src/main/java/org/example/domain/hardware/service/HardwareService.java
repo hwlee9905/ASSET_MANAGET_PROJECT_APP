@@ -2,6 +2,7 @@ package org.example.domain.hardware.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
 import org.example.domain.asset.entity.Asset;
 import org.example.domain.asset.repository.AssetRepository;
 import org.example.domain.hardware.dto.request.AssignHardwareRequestDto;
@@ -50,9 +51,11 @@ public class HardwareService{
         Hardware hardware = asset.getHardware();
 
         try {
-            asset = assetRepository.save(asset);
-            hardware = hardwareRepository.save(hardware);
             hardware.setAsset(asset);
+            asset.setHardware(hardware);
+            assetRepository.save(asset);
+            hardware = hardwareRepository.save(hardware);
+            //history save
             historyService.historyActionDeleteOrInsert(
                     hardwareMapper.convertSaveHistoryDtoFromAsset(asset)
             );
@@ -62,13 +65,20 @@ public class HardwareService{
             throw e;
         }
     }
-    public void updateHardware(UpdateHardwareRequestDto updateHardwareRequestDto, Long hwidx) {
+    public void updateHardware(UpdateHardwareRequestDto updateHardwareRequestDto, Long hwidx) throws CloneNotSupportedException {
         Optional<Hardware> hardwareOptional = hardwareRepository.findById(hwidx);
         if (hardwareOptional.isPresent()) {
             Hardware hardware = hardwareOptional.get();
+            Hardware beforehardware = SerializationUtils.clone(hardware);
             hardwareMapper.convertHardwareFromDto(updateHardwareRequestDto, hardware);
-            hardwareRepository.save(hardware);
+            Hardware afterHardware = hardwareRepository.save(hardware);
             assetRepository.save(hardware.getAsset());
+            //history save
+            historyService.historyActionUpdateHw(
+                    hardwareMapper.convertBeforeFromHardware(beforehardware),
+                    hardwareMapper.convertAfterFromHardware(afterHardware)
+            );
+
         } else {
             // Handle the case where hardware with the given ID is not found
             throw new HardwareNotFoundException("Hardware not found with ID" );
@@ -77,8 +87,13 @@ public class HardwareService{
     public void deleteHardware(Long Id) {
         Optional<Hardware> hardwareOptional = hardwareRepository.findById(Id);
         if (hardwareOptional.isPresent()) {
+            Hardware hardware = hardwareOptional.get();
+            Asset asset = hardware.getAsset();
+            historyService.historyActionDeleteOrInsert(
+                    hardwareMapper.convertDeleteHistoryDtoFromAsset(asset)
+            );
             hardwareRepository.deleteById(Id);
-//            historyService.historyActionDeleteOrInsert(hardwareOptional.get().getAsset().getAssetidx(), "DELETE", hardwareOptional.get().getAsset().getAssettype());
+
         } else {
             throw new HardwareNotFoundException("Hardware not found with ID: " + Id);
         }

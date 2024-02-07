@@ -62,7 +62,7 @@ public class HardwareController {
     }
 
     @PutMapping("/assets/hardware/update")
-    public ResponseEntity<String> updateAsset(@RequestParam Long hwidx, @RequestBody UpdateHardwareRequestDto updateHardwareRequestDto, HttpServletRequest request) {
+    public ResponseEntity<String> updateAsset(@RequestParam Long hwidx, @RequestBody UpdateHardwareRequestDto updateHardwareRequestDto, HttpServletRequest request) throws CloneNotSupportedException {
         HttpSession session = request.getSession(false); // false로 설정하면 세션이 없으면 null을 반환
         // 세션이 null이면 에러 반환
         if (session == null) {

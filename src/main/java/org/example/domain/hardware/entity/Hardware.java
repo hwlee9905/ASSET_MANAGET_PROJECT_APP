@@ -1,5 +1,6 @@
 package org.example.domain.hardware.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -7,12 +8,13 @@ import lombok.Setter;
 import org.example.domain.asset.entity.Asset;
 import org.example.types.Status;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Table
 @Entity
-@Data
-public class Hardware {
+@Getter@Setter
+public class Hardware implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hwidx;
@@ -33,7 +35,12 @@ public class Hardware {
     private String currentuser;
     private String previoususer;
     private String location;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "assetidx")
+    @JsonIgnore
     private Asset asset;
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

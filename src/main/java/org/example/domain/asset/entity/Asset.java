@@ -6,10 +6,12 @@ import lombok.*;
 import org.example.domain.hardware.entity.Hardware;
 import org.example.domain.software.entity.Software;
 
-@Data
+import java.io.Serializable;
+
+@Getter@Setter
 @Entity
 @Table(name="asset")
-public class Asset {
+public class Asset implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long assetidx;

@@ -36,11 +36,13 @@ public class SoftwareService{
         Asset asset = softwareMapper.createAssetFromDto(saveSoftwareRequestDto);
         Software software = asset.getSoftware();
         try {
+            software.setAsset(asset);
+            asset.setSoftware(software);
             assetRepository.save(asset);
             software = softwareRepository.save(software);
-            software.setAsset(asset);
+
             historyService.historyActionDeleteOrInsert(
-                    softwareMapper.convertSaveHistoryDtoFromAsset(asset)
+                    softwareMapper.convertDeleteHistoryDtoFromAsset(asset)
             );
             // 히스토리 저장 로직 추가
         } catch (Exception e) {
@@ -66,8 +68,12 @@ public class SoftwareService{
 
         Optional<Software> softwareOptional = softwareRepository.findById(Id);
         if (softwareOptional.isPresent()) {
+            Software software = softwareOptional.get();
+            Asset asset = software.getAsset();
+            historyService.historyActionDeleteOrInsert(
+                    softwareMapper.convertDeleteHistoryDtoFromAsset(asset)
+            );
             softwareRepository.deleteById(Id);
-//            historyService.historyActionDeleteOrInsert(softwareOptional.get().getAsset().getAssetidx(), "DELETE", softwareOptional.get().getAsset().getAssettype());
         } else {
             throw new SoftwareNotFountException("Software not found with ID: " + Id);
         }

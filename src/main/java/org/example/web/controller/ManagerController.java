@@ -2,7 +2,7 @@ package org.example.web.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.manager.dto.ManagerDto;
+import org.example.domain.login.dto.LoginDto;
 import org.example.domain.manager.service.ManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ManagerController {
     private final ManagerService managerService;
     @PostMapping("/manager")
-    public ResponseEntity<String> saveManager(@Valid @RequestBody ManagerDto managerDto){
-        managerService.save(managerDto);
+    public ResponseEntity<String> saveManager(@Valid @RequestBody LoginDto loginDto){
+        managerService.save(loginDto);
         return new ResponseEntity<>("관리자 아이디 생성 성공", HttpStatus.OK);
     }
 }

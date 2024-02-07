@@ -1,9 +1,9 @@
-package org.example.domain.manager.dto;
+package org.example.domain.login.dto;
 
 import lombok.Data;
 
 @Data
-public class ManagerDto {
+public class LoginDto {
     public static final String LOGIN_MANAGER = "loginManager";
     private String loginId;
     private String password;
