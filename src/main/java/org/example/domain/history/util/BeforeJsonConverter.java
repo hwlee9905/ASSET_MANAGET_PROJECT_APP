@@ -21,11 +21,16 @@ public class BeforeJsonConverter implements AttributeConverter<Before, String> {
             throw new IllegalStateException("Error converting After object to JSON", e);
         }
     }
-
     @Override
     public Before convertToEntityAttribute(String json) {
-        // This conversion is not required in your case as you are only storing the JSON representation
-        // and not converting it back to the entity.
-        return null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(json, Before.class);
+        } catch (JsonProcessingException e) {
+            // Handle parsing exception
+            e.printStackTrace();
+            return null; // or throw an exception depending on your error handling strategy
+        }
     }
+
 }

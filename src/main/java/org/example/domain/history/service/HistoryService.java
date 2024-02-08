@@ -25,6 +25,7 @@ public class HistoryService {
     public void historyActionUpdateHw(Before before, After after) {
         History history = historyMapper.createHistoryFromBeforeAfter(before, after);
         history.setAction(Action.UPDATE);
+
         historyRepository.save(history);
     }
     public List<GetHistoriesResponseDto> getHistories() {

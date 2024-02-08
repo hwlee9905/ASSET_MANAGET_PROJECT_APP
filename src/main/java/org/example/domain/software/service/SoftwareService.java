@@ -56,7 +56,6 @@ public class SoftwareService{
         if (softwareOptional.isPresent()) {
             Software software = softwareOptional.get();
             softwareMapper.convertSoftwareFromDto(updateSoftwareRequestDto, software);
-            log.info(software.getExpirydate().toString());
             softwareRepository.save(software);
             assetRepository.save(software.getAsset());
         } else {

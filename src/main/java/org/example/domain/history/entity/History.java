@@ -23,7 +23,6 @@ public class History {
     @Enumerated(EnumType.STRING)
     private Action action;
     private String changedby;
-
     private Date changeddate;
     private Long assetidx;
     @Column(name = "before_json", columnDefinition = "json")
@@ -32,4 +31,10 @@ public class History {
     @Column(name = "after_json", columnDefinition = "json")
     @Convert(converter = AfterJsonConverter.class)
     private After after;
+
+    public void setBeforeAfter(Before before, After after) {
+        this.before = before;
+        this.after = after;
+    }
+
 }

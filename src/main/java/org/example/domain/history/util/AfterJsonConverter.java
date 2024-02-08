@@ -24,8 +24,13 @@ public class AfterJsonConverter implements AttributeConverter<After, String> {
 
     @Override
     public After convertToEntityAttribute(String json) {
-        // This conversion is not required in your case as you are only storing the JSON representation
-        // and not converting it back to the entity.
-        return null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(json, After.class);
+        } catch (JsonProcessingException e) {
+            // Handle parsing exception
+            throw new IllegalStateException("Error converting JSON to After object", e);
+        }
     }
+
 }
