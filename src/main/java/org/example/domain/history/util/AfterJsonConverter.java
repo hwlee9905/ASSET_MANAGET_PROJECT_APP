@@ -3,14 +3,12 @@ package org.example.domain.history.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
-import jakarta.persistence.Converter;
-import org.example.domain.history.dto.After;
+import org.example.domain.history.dto.Afterjson;
 
-public class AfterJsonConverter implements AttributeConverter<After, String> {
+public class AfterJsonConverter implements AttributeConverter<Afterjson, String> {
     private final ObjectMapper objectMapper = new ObjectMapper();
-
     @Override
-    public String convertToDatabaseColumn(After after) {
+    public String convertToDatabaseColumn(Afterjson after) {
         if (after == null) {
             return null;
         }
@@ -21,16 +19,21 @@ public class AfterJsonConverter implements AttributeConverter<After, String> {
             throw new IllegalStateException("Error converting After object to JSON", e);
         }
     }
-
     @Override
-    public After convertToEntityAttribute(String json) {
+    public Afterjson convertToEntityAttribute(String json) {
+        if (json == null) {
+
+            return null; // or throw new IllegalArgumentException("JSON string is null");
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(json, After.class);
+            return objectMapper.readValue(json, Afterjson.class);
         } catch (JsonProcessingException e) {
             // Handle parsing exception
             throw new IllegalStateException("Error converting JSON to After object", e);
         }
     }
+
 
 }

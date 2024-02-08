@@ -1,8 +1,9 @@
 package org.example.domain.history.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.domain.history.dto.After;
-import org.example.domain.history.dto.Before;
+import lombok.extern.slf4j.Slf4j;
+import org.example.domain.history.dto.Afterjson;
+import org.example.domain.history.dto.Beforejson;
 import org.example.domain.history.dto.SaveHistoryDto;
 import org.example.domain.history.dto.response.GetHistoriesResponseDto;
 import org.example.domain.history.entity.History;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class HistoryService {
     private final HistoryRepository historyRepository;
     private final HistoryMapper historyMapper;
@@ -22,14 +24,16 @@ public class HistoryService {
         History history = historyMapper.createHistoryFromDto(saveHistoryDto);
         historyRepository.save(history);
     }
-    public void historyActionUpdateHw(Before before, After after) {
+    public void historyActionUpdateHw(Beforejson before, Afterjson after) {
         History history = historyMapper.createHistoryFromBeforeAfter(before, after);
         history.setAction(Action.UPDATE);
 
         historyRepository.save(history);
     }
     public List<GetHistoriesResponseDto> getHistories() {
+
         List<History> historyList = historyRepository.findAll();
+
         return historyList.stream()
                 .map(history -> {
                     GetHistoriesResponseDto getHistoriesResponseDto = new GetHistoriesResponseDto();

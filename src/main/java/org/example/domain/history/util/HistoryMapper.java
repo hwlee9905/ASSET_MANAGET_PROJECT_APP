@@ -4,8 +4,8 @@ import lombok.Data;
 import org.example.domain.history.dto.SaveHistoryDto;
 import org.example.domain.history.dto.response.GetHistoriesResponseDto;
 import org.example.domain.history.entity.History;
-import org.example.domain.history.dto.After;
-import org.example.domain.history.dto.Before;
+import org.example.domain.history.dto.Afterjson;
+import org.example.domain.history.dto.Beforejson;
 import org.example.domain.manager.entity.Manager;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class HistoryMapper {
         history.setChangedby(loginMember.getName());
         return history;
     }
-    public History createHistoryFromBeforeAfter(Before before, After after) {
+    public History createHistoryFromBeforeAfter(Beforejson before, Afterjson after) {
         History history = modelMapper.map(before , History.class);
         modelMapper.map(after, history);
         history.setChangeddate(new Date());

@@ -1,20 +1,19 @@
 package org.example.domain.history.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.Data;
-import org.example.domain.history.dto.After;
-import org.example.domain.history.dto.Before;
+import lombok.Getter;
+import lombok.Setter;
+import org.example.domain.history.dto.Afterjson;
+import org.example.domain.history.dto.Beforejson;
 import org.example.domain.history.util.*;
 import org.example.types.Action;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "history")
-@Data
-
+@Getter
+@Setter
 public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +24,10 @@ public class History {
     private String changedby;
     private Date changeddate;
     private Long assetidx;
-    @Column(name = "before_json", columnDefinition = "json")
+    @Column(columnDefinition = "json")
     @Convert(converter = BeforeJsonConverter.class)
-    private Before before;
-    @Column(name = "after_json", columnDefinition = "json")
+    private Beforejson beforejson;
+    @Column(columnDefinition = "json")
     @Convert(converter = AfterJsonConverter.class)
-    private After after;
-
-    public void setBeforeAfter(Before before, After after) {
-        this.before = before;
-        this.after = after;
-    }
-
+    private Afterjson afterjson;
 }

@@ -1,9 +1,14 @@
 package org.example.domain.history.dto.response;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.example.domain.history.dto.Afterjson;
+import org.example.domain.history.dto.Beforejson;
 
 
-@Data
+@Getter
+@Setter
 public class GetHistoriesResponseDto {
     private Long historyidx;
     private String assettype;
@@ -11,6 +16,6 @@ public class GetHistoriesResponseDto {
     private String changedby;
     private String changeddate;
     private Long assetidx;
-    private String before_json;
-    private String after_json;
+    private Afterjson beforejson;
+    private Beforejson afterjson;
 }

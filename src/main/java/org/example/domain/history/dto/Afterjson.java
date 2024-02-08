@@ -1,19 +1,14 @@
 package org.example.domain.history.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.example.domain.hardware.entity.Hardware;
-import org.example.domain.software.entity.Software;
 import org.example.types.Status;
 
 import java.util.Date;
 
-@Getter
-@Setter
-public class Before {
+@Getter@Setter
+public class Afterjson {
     private Long assetidx;
     private String assettype;
     private String sn;
