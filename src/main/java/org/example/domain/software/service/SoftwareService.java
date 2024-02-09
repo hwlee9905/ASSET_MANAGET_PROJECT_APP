@@ -58,6 +58,7 @@ public class SoftwareService{
             softwareMapper.convertSoftwareFromDto(updateSoftwareRequestDto, software);
             softwareRepository.save(software);
             assetRepository.save(software.getAsset());
+            //히스토리 저장 로직 추가
         } else {
             // Handle the case where hardware with the given ID is not found
             throw new SoftwareNotFountException("Software not found with ID" );
