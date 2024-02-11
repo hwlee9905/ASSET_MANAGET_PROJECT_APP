@@ -30,6 +30,9 @@ public class HistoryService {
 
         historyRepository.save(history);
     }
+    public void historyActionUpdateSw(Beforejson before, Afterjson after) {
+
+    }
     public List<GetHistoriesResponseDto> getHistories() {
 
         List<History> historyList = historyRepository.findAll();

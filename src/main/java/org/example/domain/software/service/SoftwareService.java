@@ -2,10 +2,10 @@ package org.example.domain.software.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
 import org.example.domain.asset.entity.Asset;
 import org.example.domain.asset.repository.AssetRepository;
 import org.example.exception.InvalidParameterException;
-import org.example.domain.hardware.exception.HardwareNotFoundException;
 import org.example.domain.history.service.HistoryService;
 import org.example.domain.software.dto.request.SaveSoftwareRequestDto;
 import org.example.domain.software.dto.request.UpdateSoftwareRequestDto;
@@ -14,8 +14,6 @@ import org.example.domain.software.entity.Software;
 import org.example.domain.software.exception.SoftwareNotFountException;
 import org.example.domain.software.mapper.SoftwareMapper;
 import org.example.domain.software.repository.SoftwareRepository;
-import org.example.exception.DataDuplicationViolationException;
-import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,10 +53,15 @@ public class SoftwareService{
         Optional<Software> softwareOptional = softwareRepository.findById(swidx);
         if (softwareOptional.isPresent()) {
             Software software = softwareOptional.get();
+            Software beforeSoftware = SerializationUtils.clone(software);
             softwareMapper.convertSoftwareFromDto(updateSoftwareRequestDto, software);
-            softwareRepository.save(software);
+            Software afterSoftware = softwareRepository.save(software);
             assetRepository.save(software.getAsset());
             //히스토리 저장 로직 추가
+            historyService.historyActionUpdateSw(
+                    SoftwareMapper.convertBeforeFromHardware(beforeSoftware),
+                    SoftwareMapper.convertAfterFromHardware(afterSoftware)
+            );
         } else {
             // Handle the case where hardware with the given ID is not found
             throw new SoftwareNotFountException("Software not found with ID" );

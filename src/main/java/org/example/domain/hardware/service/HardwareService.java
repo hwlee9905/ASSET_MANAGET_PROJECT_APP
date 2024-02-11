@@ -9,8 +9,6 @@ import org.example.domain.hardware.dto.request.AssignHardwareRequestDto;
 import org.example.domain.hardware.dto.request.SaveHardwareRequestDto;
 import org.example.domain.hardware.dto.request.UpdateHardwareRequestDto;
 import org.example.domain.hardware.dto.response.GetHardwaresResponseDto;
-import org.example.domain.history.dto.SaveHistoryDto;
-import org.example.exception.DataDuplicationViolationException;
 import org.example.exception.InvalidParameterException;
 import org.example.domain.hardware.exception.HardwareNotFoundException;
 import org.example.domain.hardware.mapper.HardwareMapper;
@@ -69,13 +67,13 @@ public class HardwareService{
         Optional<Hardware> hardwareOptional = hardwareRepository.findById(hwidx);
         if (hardwareOptional.isPresent()) {
             Hardware hardware = hardwareOptional.get();
-            Hardware beforehardware = SerializationUtils.clone(hardware);
+            Hardware beforeHardware = SerializationUtils.clone(hardware);
             hardwareMapper.convertHardwareFromDto(updateHardwareRequestDto, hardware);
             Hardware afterHardware = hardwareRepository.save(hardware);
             assetRepository.save(hardware.getAsset());
             //history save
             historyService.historyActionUpdateHw(
-                    hardwareMapper.convertBeforeFromHardware(beforehardware),
+                    hardwareMapper.convertBeforeFromHardware(beforeHardware),
                     hardwareMapper.convertAfterFromHardware(afterHardware)
             );
 

@@ -7,12 +7,13 @@ import lombok.Setter;
 import org.example.domain.asset.entity.Asset;
 import org.example.types.Status;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Table
 @Entity
 @Getter@Setter
-public class Software {
+public class Software implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long swidx;
