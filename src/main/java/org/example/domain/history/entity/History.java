@@ -3,9 +3,11 @@ package org.example.domain.history.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.domain.history.dto.Afterjson;
-import org.example.domain.history.dto.Beforejson;
+import org.example.domain.history.dto.Afterjsonhw;
+import org.example.domain.history.dto.Beforejsonhw;
 import org.example.domain.history.util.*;
+import org.example.domain.history.dto.Afterjsonsw;
+import org.example.domain.history.dto.Beforejsonsw;
 import org.example.types.Action;
 
 import java.util.Date;
@@ -25,9 +27,15 @@ public class History {
     private Date changeddate;
     private Long assetidx;
     @Column(columnDefinition = "json")
-    @Convert(converter = BeforeJsonConverter.class)
-    private Beforejson beforejson;
+    @Convert(converter = BeforeJsonConverterHw.class)
+    private Beforejsonhw beforejsonhw;
     @Column(columnDefinition = "json")
-    @Convert(converter = AfterJsonConverter.class)
-    private Afterjson afterjson;
+    @Convert(converter = AfterJsonConverterHw.class)
+    private Afterjsonhw afterjsonhw;
+    @Column(columnDefinition = "json")
+    @Convert(converter = BeforeJsonConverterSw.class)
+    private Beforejsonsw beforejsonsw;
+    @Column(columnDefinition = "json")
+    @Convert(converter = AfterJsonConverterSw.class)
+    private Afterjsonsw afterjsonsw;
 }

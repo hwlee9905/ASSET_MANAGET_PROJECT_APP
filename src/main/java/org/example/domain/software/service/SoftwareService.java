@@ -58,10 +58,10 @@ public class SoftwareService{
             Software afterSoftware = softwareRepository.save(software);
             assetRepository.save(software.getAsset());
             //히스토리 저장 로직 추가
-//            historyService.historyActionUpdateSw(
-//                    SoftwareMapper.convertBeforeFromHardware(beforeSoftware),
-//                    SoftwareMapper.convertAfterFromHardware(afterSoftware)
-//            );
+            historyService.historyActionUpdateSw(
+                    softwareMapper.convertBeforeFromSoftware(beforeSoftware),
+                    softwareMapper.convertAfterFromSoftware(afterSoftware)
+            );
         } else {
             // Handle the case where hardware with the given ID is not found
             throw new SoftwareNotFountException("Software not found with ID" );
@@ -74,7 +74,7 @@ public class SoftwareService{
             Software software = softwareOptional.get();
             Asset asset = software.getAsset();
             historyService.historyActionDeleteOrInsert(
-                    softwareMapper.convertDeleteHistoryDtoFromAsset(asset)
+                    softwareMapper.convertSaveHistoryDtoFromAsset(asset)
             );
             softwareRepository.deleteById(Id);
         } else {

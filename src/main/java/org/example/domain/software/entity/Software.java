@@ -1,5 +1,6 @@
 package org.example.domain.software.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class Software implements Serializable {
     private String currentuser;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "assetidx")
     private Asset asset;
 

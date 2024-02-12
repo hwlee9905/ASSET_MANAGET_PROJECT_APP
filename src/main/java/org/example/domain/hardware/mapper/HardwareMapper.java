@@ -8,8 +8,8 @@ import org.example.domain.hardware.dto.request.SaveHardwareRequestDto;
 import org.example.domain.hardware.dto.request.UpdateHardwareRequestDto;
 import org.example.domain.hardware.dto.response.GetHardwaresResponseDto;
 import org.example.domain.hardware.entity.Hardware;
-import org.example.domain.history.dto.Afterjson;
-import org.example.domain.history.dto.Beforejson;
+import org.example.domain.history.dto.Afterjsonhw;
+import org.example.domain.history.dto.Beforejsonhw;
 import org.example.domain.history.dto.SaveHistoryDto;
 import org.example.types.Action;
 import org.example.types.Status;
@@ -56,13 +56,13 @@ public class HardwareMapper {
         return saveHistoryDto;
     }
 
-    public Beforejson convertBeforeFromHardware(Hardware beforehardware) {
-        Beforejson before = modelMapper.map(beforehardware, Beforejson.class);
+    public Beforejsonhw convertBeforeFromHardware(Hardware beforehardware) {
+        Beforejsonhw before = modelMapper.map(beforehardware, Beforejsonhw.class);
         modelMapper.map(beforehardware.getAsset(), before);
         return before;
     }
-    public Afterjson convertAfterFromHardware(Hardware afterhardware) {
-        Afterjson after = modelMapper.map(afterhardware, Afterjson.class);
+    public Afterjsonhw convertAfterFromHardware(Hardware afterhardware) {
+        Afterjsonhw after = modelMapper.map(afterhardware, Afterjsonhw.class);
         modelMapper.map(afterhardware.getAsset(), after);
         return after;
     }

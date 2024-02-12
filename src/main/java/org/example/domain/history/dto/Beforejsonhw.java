@@ -7,8 +7,9 @@ import org.example.types.Status;
 
 import java.util.Date;
 
-@Getter@Setter
-public class Afterjson {
+@Getter
+@Setter
+public class Beforejsonhw {
     private Long assetidx;
     private String assettype;
     private String sn;
