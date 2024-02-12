@@ -7,7 +7,7 @@ import jakarta.persistence.Converter;
 import org.example.domain.history.dto.Beforejsonhw;
 
 @Converter
-public class BeforeJsonConverter implements AttributeConverter<Beforejsonhw, String> {
+public class BeforeJsonConverterHw implements AttributeConverter<Beforejsonhw, String> {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override

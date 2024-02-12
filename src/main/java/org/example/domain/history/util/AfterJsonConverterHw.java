@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import org.example.domain.history.dto.Afterjsonhw;
 
-public class AfterJsonConverter implements AttributeConverter<Afterjsonhw, String> {
+public class AfterJsonConverterHw implements AttributeConverter<Afterjsonhw, String> {
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public String convertToDatabaseColumn(Afterjsonhw after) {

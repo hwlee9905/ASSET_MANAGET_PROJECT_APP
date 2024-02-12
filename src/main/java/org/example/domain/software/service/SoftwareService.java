@@ -74,7 +74,7 @@ public class SoftwareService{
             Software software = softwareOptional.get();
             Asset asset = software.getAsset();
             historyService.historyActionDeleteOrInsert(
-                    softwareMapper.convertDeleteHistoryDtoFromAsset(asset)
+                    softwareMapper.convertSaveHistoryDtoFromAsset(asset)
             );
             softwareRepository.deleteById(Id);
         } else {

@@ -7,8 +7,8 @@ import org.example.domain.history.entity.History;
 import org.example.domain.history.dto.Afterjsonhw;
 import org.example.domain.history.dto.Beforejsonhw;
 import org.example.domain.manager.entity.Manager;
-import org.example.domain.software.dto.Afterjsonsw;
-import org.example.domain.software.dto.Beforejsonsw;
+import org.example.domain.history.dto.Afterjsonsw;
+import org.example.domain.history.dto.Beforejsonsw;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

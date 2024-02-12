@@ -1,10 +1,11 @@
 package org.example.domain.software.mapper;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.example.domain.asset.entity.Asset;
 import org.example.domain.history.dto.SaveHistoryDto;
-import org.example.domain.software.dto.Afterjsonsw;
-import org.example.domain.software.dto.Beforejsonsw;
+import org.example.domain.history.dto.Afterjsonsw;
+import org.example.domain.history.dto.Beforejsonsw;
 import org.example.domain.software.dto.request.SaveSoftwareRequestDto;
 import org.example.domain.software.dto.request.UpdateSoftwareRequestDto;
 import org.example.domain.software.dto.response.GetSoftwaresResponseDto;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
+@Slf4j
 public class SoftwareMapper {
     private final ModelMapper modelMapper;
 
@@ -44,6 +46,7 @@ public class SoftwareMapper {
         modelMapper.map(asset, saveHistoryDto);
         return saveHistoryDto;
     }
+
     public Beforejsonsw convertBeforeFromSoftware(Software beforeSoftware) {
         Beforejsonsw before = modelMapper.map(beforeSoftware, Beforejsonsw.class);
         modelMapper.map(beforeSoftware.getAsset(), before);

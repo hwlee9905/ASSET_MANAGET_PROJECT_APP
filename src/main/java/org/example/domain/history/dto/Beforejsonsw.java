@@ -1,10 +1,13 @@
-package org.example.domain.software.dto;
+package org.example.domain.history.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.example.types.Status;
 
 import java.util.Date;
-
+@Getter@Setter
 public class Beforejsonsw {
     private Long swidx;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

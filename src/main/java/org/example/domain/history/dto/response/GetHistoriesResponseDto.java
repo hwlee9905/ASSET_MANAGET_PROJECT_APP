@@ -3,7 +3,9 @@ package org.example.domain.history.dto.response;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.domain.history.dto.Afterjsonhw;
+import org.example.domain.history.dto.Afterjsonsw;
 import org.example.domain.history.dto.Beforejsonhw;
+import org.example.domain.history.dto.Beforejsonsw;
 
 
 @Getter
@@ -15,6 +17,8 @@ public class GetHistoriesResponseDto {
     private String changedby;
     private String changeddate;
     private Long assetidx;
-    private Afterjsonhw beforejson;
-    private Beforejsonhw afterjson;
+    private Afterjsonhw beforejsonhw;
+    private Beforejsonhw afterjsonhw;
+    private Afterjsonsw beforejsonsw;
+    private Beforejsonsw afterjsonsw;
 }
