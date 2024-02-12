@@ -59,8 +59,8 @@ public class SoftwareService{
             assetRepository.save(software.getAsset());
             //히스토리 저장 로직 추가
             historyService.historyActionUpdateSw(
-                    SoftwareMapper.convertBeforeFromHardware(beforeSoftware),
-                    SoftwareMapper.convertAfterFromHardware(afterSoftware)
+                    softwareMapper.convertBeforeFromSoftware(beforeSoftware),
+                    softwareMapper.convertAfterFromSoftware(afterSoftware)
             );
         } else {
             // Handle the case where hardware with the given ID is not found

@@ -4,14 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import org.example.domain.history.dto.Beforejson;
+import org.example.domain.history.dto.Beforejsonhw;
 
 @Converter
-public class BeforeJsonConverter implements AttributeConverter<Beforejson, String> {
+public class BeforeJsonConverter implements AttributeConverter<Beforejsonhw, String> {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String convertToDatabaseColumn(Beforejson before) {
+    public String convertToDatabaseColumn(Beforejsonhw before) {
         if (before == null) {
             return null;
         }
@@ -22,10 +22,10 @@ public class BeforeJsonConverter implements AttributeConverter<Beforejson, Strin
         }
     }
     @Override
-    public Beforejson convertToEntityAttribute(String json) {
+    public Beforejsonhw convertToEntityAttribute(String json) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(json, Beforejson.class);
+            return objectMapper.readValue(json, Beforejsonhw.class);
         } catch (JsonProcessingException e) {
             // Handle parsing exception
             e.printStackTrace();
