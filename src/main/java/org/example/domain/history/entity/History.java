@@ -26,16 +26,16 @@ public class History {
     private String changedby;
     private Date changeddate;
     private Long assetidx;
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     @Convert(converter = BeforeJsonConverterHw.class)
     private Beforejsonhw beforejsonhw;
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     @Convert(converter = AfterJsonConverterHw.class)
     private Afterjsonhw afterjsonhw;
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     @Convert(converter = BeforeJsonConverterSw.class)
     private Beforejsonsw beforejsonsw;
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     @Convert(converter = AfterJsonConverterSw.class)
     private Afterjsonsw afterjsonsw;
 }
