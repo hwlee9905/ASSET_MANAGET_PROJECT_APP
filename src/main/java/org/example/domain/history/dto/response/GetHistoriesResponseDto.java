@@ -17,8 +17,8 @@ public class GetHistoriesResponseDto {
     private String changedby;
     private String changeddate;
     private Long assetidx;
-    private Afterjsonhw beforejsonhw;
-    private Beforejsonhw afterjsonhw;
-    private Afterjsonsw beforejsonsw;
-    private Beforejsonsw afterjsonsw;
+    private Afterjsonhw afterjsonhw;
+    private Beforejsonhw beforejsonhw;
+    private Afterjsonsw afterjsonsw;
+    private Beforejsonsw beforejsonsw;
 }
