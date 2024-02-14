@@ -21,7 +21,7 @@ public class AssetController {
 
         return assetService.getAssets();
     }
-    //localhost:8080/assets/index
+
     @GetMapping("/asset")
     public AssetDto getAsset(@RequestParam("idx") Long index){
         return assetService.getAsset(index);
