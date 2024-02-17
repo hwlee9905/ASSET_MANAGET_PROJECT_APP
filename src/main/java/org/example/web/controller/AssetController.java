@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class AssetController {
     private final AssetService assetService;
-    //dto수정
+    //dto수정2
     @GetMapping("/assets/entire") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
     public List<AssetDto> getAssets(){
 
