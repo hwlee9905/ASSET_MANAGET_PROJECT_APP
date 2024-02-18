@@ -21,7 +21,7 @@ public class AssetController {
 
         return assetService.getAssets();
     }
-    //dto수정
+    //dto수정2
     @GetMapping("/asset")
     public AssetDto getAsset(@RequestParam("idx") Long index){
         return assetService.getAsset(index);
