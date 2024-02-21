@@ -34,14 +34,5 @@ public class GetAssetsResponseDto {
     private Date assigneddate;
     private String previoususer;
     private String location;
-    public static GetAssetsResponseDto convertToDto(Asset asset) {
-        GetAssetsResponseDto assetDto = new GetAssetsResponseDto();
-        assetDto.setAssetidx(asset.getAssetidx());
-        assetDto.setAssettype(asset.getAssettype());
-        assetDto.setSn(asset.getSn());
-        assetDto.setDept(asset.getDept());
-        assetDto.setManufacturer(asset.getManufacturer());
-        assetDto.setAssetname(asset.getAssetname());
-        return assetDto;
-    }
+
 }
