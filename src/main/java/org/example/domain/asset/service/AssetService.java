@@ -30,11 +30,11 @@ public class AssetService {
         return assetDto;
     }
 
-    public GetAssetsResponseDto getAsset(Long id) {
-        Optional<Asset> asset = assetRepository.findById(id);
-        if (asset.isPresent()) {
-            return asset.map(GetAssetsResponseDto::convertToDto).orElse(null);
-        }
-        throw new DataRetrievalFailureException("Asset not found with ID: " + id);
-    }
+//    public GetAssetsResponseDto getAsset(Long id) {
+//        Optional<Asset> asset = assetRepository.findById(id);
+//        if (asset.isPresent()) {
+//            return asset.map(GetAssetsResponseDto::convertToDto).orElse(null);
+//        }
+//        throw new DataRetrievalFailureException("Asset not found with ID: " + id);
+//    }
 }
