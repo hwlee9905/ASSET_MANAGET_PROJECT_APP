@@ -22,10 +22,10 @@ public class AssetController {
         return assetService.getAssets();
     }
     //dto수정2
-    @GetMapping("/asset")
-    public GetAssetsResponseDto getAsset(@RequestParam("idx") Long index){
-        return assetService.getAsset(index);
-    }
+//    @GetMapping("/asset")
+//    public GetAssetsResponseDto getAsset(@RequestParam("idx") Long index){
+//        return assetService.getAsset(index);
+//    }
 
 
 }
