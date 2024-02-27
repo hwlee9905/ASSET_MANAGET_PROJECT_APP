@@ -20,6 +20,6 @@ public class ManagerController {
     @PostMapping("/manager")
     public ResponseEntity<String> saveManager(@Valid @RequestBody LoginDto loginDto){
         managerService.save(loginDto);
-        return new ResponseEntity<>("관리자 아이디 생성 성공", HttpStatus.OK);
+        return new ResponseEntity<>("관리자 아이디 생성 성공.", HttpStatus.OK);
     }
 }
