@@ -167,6 +167,7 @@ public class SoftwareService{
             // Or return null, depending on your application's logic
         }
     }
+    //enum으로 대체
     private boolean isSortAttrInAsset(String sortAttr) {
         Set<String> assetProperties = new HashSet<>(Arrays.asList(
                 "assetidx", "assetType", "sn", "dept", "manufacturer", "assetName"
