@@ -124,7 +124,8 @@ public class SoftwareService{
             throw new SoftwareNotFountException("Software not found with ID: " + id);
         }
     }
-    public boolean isSortAttrInAsset(String sortAttr) {
+    //enum으로 대체
+    private boolean isSortAttrInAsset(String sortAttr) {
         Set<String> assetProperties = new HashSet<>(Arrays.asList(
                 "assetidx", "assetType", "sn", "dept", "manufacturer", "assetName"
         ));
