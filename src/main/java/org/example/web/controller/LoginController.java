@@ -5,7 +5,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.domain.manager.dto.ManagerDto;
+import org.example.domain.history.util.HistoryMapper;
+import org.example.domain.login.dto.LoginDto;
 import org.example.domain.login.service.LoginService;
 import org.example.domain.manager.entity.Manager;
 import org.springframework.http.HttpStatus;
@@ -18,22 +19,23 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 public class LoginController {
     private final LoginService loginService;
-
+    private final HistoryMapper historyMapper;
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody ManagerDto managerDto, HttpServletRequest request) {
-        Manager manager = loginService.login(managerDto.getLoginId(), managerDto.getPassword());
+    public ResponseEntity<String> login(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request) {
+        Manager manager = loginService.login(loginDto.getLoginId(), loginDto.getPassword());
         if (manager == null) {
             return new ResponseEntity<>("LOGIN FAILED : 아이디 또는 비밀번호가 맞지 않습니다.", HttpStatus.SERVICE_UNAVAILABLE);
         }else{
             //세션이 있으면 세션 반환, 없으면 신규 세션을 생성
             HttpSession session = request.getSession();
             //세션에 로그인 회원 정보 저장
-            session.setAttribute(ManagerDto.LOGIN_MANAGER, manager);
+            session.setAttribute(LoginDto.LOGIN_MANAGER, manager);
+            historyMapper.setLoginMember((Manager) session.getAttribute(LoginDto.LOGIN_MANAGER));
             return new ResponseEntity<>("LOGIN SUCCESS", HttpStatus.OK);
         }
     }
     @PostMapping("/login/session")
-    public ResponseEntity<Manager> getSession(@SessionAttribute(name = ManagerDto.LOGIN_MANAGER, required = false) Manager manager, HttpServletRequest request) {
+    public ResponseEntity<Manager> getSession(@SessionAttribute(name = LoginDto.LOGIN_MANAGER, required = false) Manager manager, HttpServletRequest request) {
         HttpSession session = request.getSession(false); // false로 설정하면 세션이 없으면 null을 반환
         // 세션이 null이면 에러 반환
         if (session == null) {

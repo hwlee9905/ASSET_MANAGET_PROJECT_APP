@@ -3,14 +3,15 @@ package org.example.domain.asset.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.example.domain.software.dto.SoftwareDto;
 import org.example.domain.hardware.entity.Hardware;
 import org.example.domain.software.entity.Software;
 
-@Data
+import java.io.Serializable;
+
+@Getter@Setter
 @Entity
 @Table(name="asset")
-public class Asset {
+public class Asset implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long assetidx;
@@ -27,30 +28,5 @@ public class Asset {
     private Software software;
     public Asset() {
 
-    }
-    public void setHardware(Hardware hardware) {
-        this.hardware = hardware;
-        hardware.setAsset(this);
-    }
-
-    public void setSoftware(Software software) {
-        this.software = software;
-        software.setAsset(this);
-    }
-    static public Asset createAsset(SoftwareDto softwareDto) {
-        Asset asset = new Asset();
-        asset.setSn(softwareDto.getSn());
-        asset.setDept(softwareDto.getDept());
-        asset.setAssettype(softwareDto.getAssettype());
-        asset.setManufacturer(softwareDto.getManufacturer());
-        asset.setAssetname(softwareDto.getAssetname());
-        return asset;
-    }
-    static public Software createSoftware(SoftwareDto softwareDto) {
-        Software software = new Software();
-        software.setExpirydate(softwareDto.getExpirydate());
-        software.setCurrentuser(softwareDto.getCurrentuser());
-        software.setStatus(softwareDto.getStatus());
-        return software;
     }
 }

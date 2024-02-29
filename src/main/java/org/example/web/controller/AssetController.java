@@ -2,7 +2,7 @@ package org.example.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.domain.asset.dto.AssetDto;
+import org.example.domain.asset.dto.GetAssetsResponseDto;
 import org.example.domain.asset.service.AssetService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,18 +15,17 @@ import java.util.List;
 @Slf4j
 public class AssetController {
     private final AssetService assetService;
-    //localhost:8080/assets
-
+    //dto수정2
     @GetMapping("/assets/entire") //@RequestMapping(value = "/assets", method = RequestMethod.GET)
-    public List<AssetDto> getAssets(){
+    public List<GetAssetsResponseDto> getAssets(){
 
         return assetService.getAssets();
     }
-    //localhost:8080/assets/index
-    @GetMapping("/asset")
-    public AssetDto getAsset(@RequestParam("idx") Long index){
-        return assetService.getAsset(index);
-    }
+    //dto수정2
+//    @GetMapping("/asset")
+//    public GetAssetsResponseDto getAsset(@RequestParam("idx") Long index){
+//        return assetService.getAsset(index);
+//    }
 
 
 }

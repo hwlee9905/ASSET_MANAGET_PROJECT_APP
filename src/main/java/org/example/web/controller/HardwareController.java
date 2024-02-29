@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.domain.hardware.dto.request.AssignHardwareRequestDto;
 import org.example.domain.hardware.dto.request.SaveHardwareRequestDto;
 import org.example.domain.hardware.dto.request.UpdateHardwareRequestDto;
-import org.example.domain.hardware.dto.response.GetHardwaresDtoResponse;
+import org.example.domain.hardware.dto.response.GetHardwaresResponseDto;
 import org.example.domain.login.exception.AuthenticationFailedException;
 import org.example.domain.hardware.service.HardwareService;
 import org.springframework.http.HttpStatus;
@@ -47,22 +47,22 @@ public class HardwareController {
     }
 
     @GetMapping("/assets/hardwares")
-    public List<GetHardwaresDtoResponse> getAssets() {
+    public List<GetHardwaresResponseDto> getAssets() {
         log.info("in hardwares");
         return hardwareService.getHardwares();
     }
     @GetMapping("/assets/hardwares/sort")
-    public List<GetHardwaresDtoResponse> getAssets(@RequestParam("sortAttr") String sortAttr, @RequestParam("sortOrder") String sortOrder) {
+    public List<GetHardwaresResponseDto> getAssets(@RequestParam("sortAttr") String sortAttr, @RequestParam("sortOrder") String sortOrder) {
         return hardwareService.getHardwares(sortAttr, sortOrder);
     }
 
     @GetMapping("/assets/hardware")
-    public GetHardwaresDtoResponse getAsset(@RequestParam Long idx){
+    public GetHardwaresResponseDto getAsset(@RequestParam Long idx){
         return hardwareService.getHardware(idx);
     }
 
     @PutMapping("/assets/hardware/update")
-    public ResponseEntity<String> updateAsset(@RequestParam Long hwidx, @RequestBody UpdateHardwareRequestDto updateHardwareRequestDto, HttpServletRequest request) {
+    public ResponseEntity<String> updateAsset(@RequestParam Long hwidx, @RequestBody UpdateHardwareRequestDto updateHardwareRequestDto, HttpServletRequest request) throws CloneNotSupportedException {
         HttpSession session = request.getSession(false); // false로 설정하면 세션이 없으면 null을 반환
         // 세션이 null이면 에러 반환
         if (session == null) {

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 public class AppConfig {
+    //mapper 등록
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();

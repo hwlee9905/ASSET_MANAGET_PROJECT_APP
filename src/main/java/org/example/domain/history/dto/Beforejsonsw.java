@@ -1,25 +1,23 @@
-package org.example.domain.software.dto;
+package org.example.domain.history.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.example.types.Status;
 
 import java.util.Date;
-
-@Getter
-@Setter
-@RequiredArgsConstructor
-public class SoftwareDto {
+@Getter@Setter
+public class Beforejsonsw {
     private Long swidx;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date expirydate;
+    private String currentuser;
+    private Status status;
     private Long assetidx;
     private String assettype;
     private String sn;
     private String dept;
     private String manufacturer;
     private String assetname;
-    private String currentuser;
-    private Status status;
-
 }

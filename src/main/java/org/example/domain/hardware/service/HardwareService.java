@@ -2,14 +2,14 @@ package org.example.domain.hardware.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
 import org.example.domain.asset.entity.Asset;
 import org.example.domain.asset.repository.AssetRepository;
 import org.example.domain.hardware.dto.request.AssignHardwareRequestDto;
 import org.example.domain.hardware.dto.request.SaveHardwareRequestDto;
 import org.example.domain.hardware.dto.request.UpdateHardwareRequestDto;
-import org.example.domain.hardware.dto.response.GetHardwaresDtoResponse;
-import org.example.domain.hardware.exception.DataDuplicationViolationException;
-import org.example.domain.hardware.exception.HardwareInvalidParameterException;
+import org.example.domain.hardware.dto.response.GetHardwaresResponseDto;
+import org.example.exception.InvalidParameterException;
 import org.example.domain.hardware.exception.HardwareNotFoundException;
 import org.example.domain.hardware.mapper.HardwareMapper;
 import org.example.domain.hardware.repository.HardwareRepository;
@@ -18,6 +18,7 @@ import org.example.domain.history.service.HistoryService;
 import org.example.types.AssetProperty;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,29 +37,46 @@ public class HardwareService{
             Hardware hardware = hardwareOptional.get();
             hardwareMapper.assignHardwareFromDto(assignHardwareDtoRequest, hardware);
             hardwareRepository.save(hardware);
+
         } else {
             // Handle the case where hardware with the given ID is not found
             throw new HardwareNotFoundException("Hardware not found with ID" );
         }
     }
+    @Transactional
     public void saveHardware(SaveHardwareRequestDto saveHardwareRequestDto) {
-        try{
-            Asset asset = hardwareMapper.createAssetFromDto(saveHardwareRequestDto);
-            hardwareRepository.save(asset.getHardware()); // Hardware 저장
+        Asset asset = hardwareMapper.createAssetFromDto(saveHardwareRequestDto);
+        Hardware hardware = asset.getHardware();
+
+        try {
+            hardware.setAsset(asset);
+            asset.setHardware(hardware);
             assetRepository.save(asset);
-            historyService.historyActionDeleteOrInsert(asset.getAssetidx(), "INSERT", asset.getAssettype());
-            //history save logic
-        } catch (RuntimeException e) {
-            throw new DataDuplicationViolationException("이미 등록된 S/N입니다.");
+            hardware = hardwareRepository.save(hardware);
+            //history save
+            historyService.historyActionDeleteOrInsert(
+                    hardwareMapper.convertSaveHistoryDtoFromAsset(asset)
+            );
+        } catch (Exception e) {
+            // 롤백 처리
+            hardwareRepository.delete(hardware);
+            throw e;
         }
     }
-    public void updateHardware(UpdateHardwareRequestDto updateHardwareRequestDto, Long hwidx) {
+    public void updateHardware(UpdateHardwareRequestDto updateHardwareRequestDto, Long hwidx) throws CloneNotSupportedException {
         Optional<Hardware> hardwareOptional = hardwareRepository.findById(hwidx);
         if (hardwareOptional.isPresent()) {
             Hardware hardware = hardwareOptional.get();
-            hardwareMapper.updateHardwareFromDto(updateHardwareRequestDto, hardware);
-            hardwareRepository.save(hardware);
+            Hardware beforeHardware = SerializationUtils.clone(hardware);
+            hardwareMapper.convertHardwareFromDto(updateHardwareRequestDto, hardware);
+            Hardware afterHardware = hardwareRepository.save(hardware);
             assetRepository.save(hardware.getAsset());
+            //history save
+            historyService.historyActionUpdateHw(
+                    hardwareMapper.convertBeforeFromHardware(beforeHardware),
+                    hardwareMapper.convertAfterFromHardware(afterHardware)
+            );
+
         } else {
             // Handle the case where hardware with the given ID is not found
             throw new HardwareNotFoundException("Hardware not found with ID" );
@@ -67,22 +85,27 @@ public class HardwareService{
     public void deleteHardware(Long Id) {
         Optional<Hardware> hardwareOptional = hardwareRepository.findById(Id);
         if (hardwareOptional.isPresent()) {
+            Hardware hardware = hardwareOptional.get();
+            Asset asset = hardware.getAsset();
+            historyService.historyActionDeleteOrInsert(
+                    hardwareMapper.convertDeleteHistoryDtoFromAsset(asset)
+            );
             hardwareRepository.deleteById(Id);
-            historyService.historyActionDeleteOrInsert(hardwareOptional.get().getAsset().getAssetidx(), "DELETE", hardwareOptional.get().getAsset().getAssettype());
+
         } else {
             throw new HardwareNotFoundException("Hardware not found with ID: " + Id);
         }
     }
-    public List<GetHardwaresDtoResponse> getHardwares(){
+    public List<GetHardwaresResponseDto> getHardwares(){
         List<Hardware> hardwareList = hardwareRepository.findAll();
         return hardwareList.stream()
                 .map(hardware -> {
-                    GetHardwaresDtoResponse getHardwaresDtoResponse = new GetHardwaresDtoResponse();
-                    hardwareMapper.updateDtoFromEntity(getHardwaresDtoResponse,hardware, hardware.getAsset());
-                    return getHardwaresDtoResponse;
+                    GetHardwaresResponseDto getHardwaresResponseDto = new GetHardwaresResponseDto();
+                    hardwareMapper.convertDtoFromEntity(getHardwaresResponseDto, hardware, hardware.getAsset());
+                    return getHardwaresResponseDto;
                 }).collect(Collectors.toList());
     }
-    public List<GetHardwaresDtoResponse> getHardwares(String sortAttr, String sortOrder) {
+    public List<GetHardwaresResponseDto> getHardwares(String sortAttr, String sortOrder) {
         try {
             List<Hardware> hardwareList = null;
             if (sortAttr != null && !sortAttr.isEmpty() && sortOrder != null && !sortOrder.isEmpty()) {
@@ -95,22 +118,22 @@ public class HardwareService{
             }
             return hardwareList.stream()
                     .map(hardware -> {
-                        GetHardwaresDtoResponse getHardwaresDtoResponse = new GetHardwaresDtoResponse();
-                        hardwareMapper.updateDtoFromEntity(getHardwaresDtoResponse,hardware, hardware.getAsset());
-                        return getHardwaresDtoResponse;
+                        GetHardwaresResponseDto getHardwaresResponseDto = new GetHardwaresResponseDto();
+                        hardwareMapper.convertDtoFromEntity(getHardwaresResponseDto,hardware, hardware.getAsset());
+                        return getHardwaresResponseDto;
                     }).collect(Collectors.toList());
         } catch (RuntimeException e) {
-            throw new HardwareInvalidParameterException("Both sort attribute (sortAttr) and sort order (sortOrder) must be provided");
+            throw new InvalidParameterException("Both sort attribute (sortAttr) and sort order (sortOrder) must be provided");
         }
 
     }
-    public GetHardwaresDtoResponse getHardware(Long id) {
+    public GetHardwaresResponseDto getHardware(Long id) {
         Optional<Hardware> hardwareOptional = hardwareRepository.findById(id);
         if (hardwareOptional.isPresent()) {
             Hardware hardware = hardwareOptional.get();
-            GetHardwaresDtoResponse getHardwaresDtoResponse = new GetHardwaresDtoResponse();
-            hardwareMapper.updateDtoFromEntity(getHardwaresDtoResponse,hardware, hardware.getAsset());
-            return getHardwaresDtoResponse;
+            GetHardwaresResponseDto getHardwaresResponseDto = new GetHardwaresResponseDto();
+            hardwareMapper.convertDtoFromEntity(getHardwaresResponseDto,hardware, hardware.getAsset());
+            return getHardwaresResponseDto;
         } else {
             // Handle the case where hardware with the given ID is not found
             throw new HardwareNotFoundException("Hardware not found with ID: " + id);
